@@ -1,3 +1,116 @@
 {
-  "placeholderImages": []
+  "placeholderImages": [
+    {
+      "id": "prod_001",
+      "name": "Vintage Floral Midi Dress",
+      "description": "A beautiful vintage midi dress with a floral pattern, perfect for summer outings. Features a cinched waist and puff sleeves.",
+      "price": 25.00,
+      "category": "Clothes",
+      "condition": "Like New",
+      "stock_qty": 1,
+      "images": ["/placeholders/dress1.jpg", "/placeholders/dress2.jpg"],
+      "is_featured": true,
+      "is_archived": false,
+      "created_at": "2024-07-20T10:00:00Z",
+      "imageHint": "floral dress"
+    },
+    {
+      "id": "prod_002",
+      "name": "Classic Leather Tote Bag",
+      "description": "A timeless tote bag made from genuine leather. Spacious enough for your daily essentials and a laptop.",
+      "price": 45.00,
+      "category": "Bags",
+      "condition": "Good",
+      "stock_qty": 1,
+      "images": ["/placeholders/bag1.jpg"],
+      "is_featured": true,
+      "is_archived": false,
+      "created_at": "2024-07-19T11:30:00Z",
+      "imageHint": "leather bag"
+    },
+    {
+      "id": "prod_003",
+      "name": "Retro-style Sneakers",
+      "description": "Comfortable and stylish retro sneakers. Perfect for a casual, sporty look. Lightly used with minimal signs of wear.",
+      "price": 30.00,
+      "category": "Shoes",
+      "condition": "Like New",
+      "stock_qty": 0,
+      "images": ["/placeholders/shoes1.jpg"],
+      "is_featured": false,
+      "is_archived": false,
+      "created_at": "2024-07-15T09:00:00Z",
+      "imageHint": "retro sneakers"
+    },
+    {
+      "id": "prod_004",
+      "name": "Gold-Plated Minimalist Watch",
+      "description": "An elegant and simple watch with a minimalist face and a durable gold-plated strap. Needs a new battery.",
+      "price": 20.00,
+      "category": "Accessories",
+      "condition": "Fair",
+      "stock_qty": 1,
+      "images": ["/placeholders/watch1.jpg"],
+      "is_featured": false,
+      "is_archived": false,
+      "created_at": "2024-07-18T14:00:00Z",
+      "imageHint": "gold watch"
+    },
+    {
+      "id": "prod_005",
+      "name": "Denim Jacket with Patches",
+      "description": "A classic denim jacket customized with cool, retro patches. A unique piece to make your outfit stand out.",
+      "price": 35.00,
+      "category": "Clothes",
+      "condition": "Good",
+      "stock_qty": 1,
+      "images": ["/placeholders/jacket1.jpg"],
+      "is_featured": true,
+      "is_archived": false,
+      "created_at": "2024-05-10T12:00:00Z",
+      "imageHint": "denim jacket"
+    },
+    {
+      "id": "prod_006",
+      "name": "Portable Film Camera",
+      "description": "A compact and easy-to-use 35mm film camera. Perfect for beginners in film photography. Tested and working.",
+      "price": 50.00,
+      "category": "Electronics",
+      "condition": "Good",
+      "stock_qty": 1,
+      "images": ["/placeholders/camera1.jpg"],
+      "is_featured": false,
+      "is_archived": false,
+      "created_at": "2024-06-25T18:00:00Z",
+      "imageHint": "film camera"
+    },
+    {
+      "id": "prod_007",
+      "name": "Bohemian Woven Crossbody",
+      "description": "A light and stylish crossbody bag with a bohemian woven design. Ideal for festivals or a day at the beach.",
+      "price": 18.00,
+      "category": "Bags",
+      "condition": "Brand New",
+      "stock_qty": 3,
+      "images": ["/placeholders/bag2.jpg"],
+      "is_featured": false,
+      "is_archived": false,
+      "created_at": "2024-07-21T08:00:00Z",
+      "imageHint": "woven bag"
+    },
+    {
+      "id": "prod_008",
+      "name": "Platform Suede Boots",
+      "description": "Bold platform boots in a soft suede material. Show some signs of wear on the soles but in great shape otherwise.",
+      "price": 40.00,
+      "category": "Shoes",
+      "condition": "Good",
+      "stock_qty": 1,
+      "images": ["/placeholders/boots1.jpg"],
+      "is_featured": true,
+      "is_archived": false,
+      "created_at": "2024-04-12T16:20:00Z",
+      "imageHint": "platform boots"
+    }
+  ]
 }
