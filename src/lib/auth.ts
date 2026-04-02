@@ -6,7 +6,6 @@ export async function signInWithFacebook() {
     provider: 'facebook',
     options: {
       redirectTo: `${window.location.origin}/auth/callback`,
-      scopes: 'email,public_profile'
     }
   })
   if (error) throw error
