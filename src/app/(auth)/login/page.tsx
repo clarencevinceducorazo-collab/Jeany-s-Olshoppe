@@ -1,11 +1,12 @@
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
 import { FacebookLoginButton } from "@/components/facebook-login-button";
+import { GoogleLoginButton } from "@/components/google-login-button";
 import { login } from "@/app/auth/actions";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import { ArrowLeft } from "lucide-react";
 
 type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>;
 
@@ -14,59 +15,70 @@ export default async function LoginPage(props: { searchParams: SearchParams }) {
   const error = searchParams.error as string | undefined;
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background p-4">
-      <Card className="w-full max-w-sm">
-        <CardHeader>
-          <CardTitle className="text-2xl font-headline">Welcome Back</CardTitle>
-          <CardDescription>Enter your credentials to access your account.</CardDescription>
-        </CardHeader>
-        <CardContent className="grid gap-4">
-          <FacebookLoginButton />
+    <div className="flex min-h-screen relative overflow-hidden bg-background">
+      {/* Abstract Background Element for Premium feel */}
+      <div className="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] rounded-full bg-accent/5 blur-[120px] pointer-events-none" />
+      <div className="absolute bottom-[-20%] right-[-10%] w-[50%] h-[50%] rounded-full bg-secondary/50 blur-[120px] pointer-events-none" />
+
+      <div className="flex w-full items-center justify-center p-6 md:p-12 z-10">
+        <div className="w-full max-w-[400px] flex flex-col gap-8 relative">
           
-          <div className="relative">
-            <div className="absolute inset-0 flex items-center">
-              <span className="w-full border-t" />
-            </div>
-            <div className="relative flex justify-center text-xs uppercase">
-              <span className="bg-background px-2 text-muted-foreground">
-                Or continue with email
-              </span>
-            </div>
+          <div className="flex justify-between items-center w-full">
+            <Link href="/" className="inline-flex items-center justify-center h-10 w-10 rounded-full bg-secondary/50 hover:bg-secondary text-foreground transition-colors group">
+              <ArrowLeft className="h-5 w-5 group-hover:-translate-x-1 transition-transform" />
+            </Link>
+            <Button variant="ghost" asChild className="text-sm font-medium hover:bg-secondary/50">
+              <Link href="/">Continue as Guest</Link>
+            </Button>
           </div>
 
-          {error && (
-            <Alert variant="destructive">
-              <AlertDescription>{error}</AlertDescription>
-            </Alert>
-          )}
+          <div className="flex flex-col gap-2">
+            <h1 className="text-3xl md:text-4xl font-headline font-semibold tracking-tight text-primary">Welcome back</h1>
+            <p className="text-muted-foreground text-sm md:text-base">Please enter your details to sign in.</p>
+          </div>
 
-          <form action={login} className="grid gap-4">
-            <div className="grid gap-2">
-              <Label htmlFor="email">Email</Label>
-              <Input id="email" name="email" type="email" placeholder="m@example.com" required />
+          <div className="flex flex-col gap-4">
+            <GoogleLoginButton />
+            <FacebookLoginButton />
+            
+            <div className="relative my-4">
+              <div className="absolute inset-0 flex items-center">
+                <span className="w-full border-t border-border/60" />
+              </div>
+              <div className="relative flex justify-center text-xs uppercase tracking-wider">
+                <span className="bg-background px-4 text-muted-foreground/70">
+                  Or sign in with email
+                </span>
+              </div>
             </div>
-            <div className="grid gap-2">
-              <Label htmlFor="password">Password</Label>
-              <Input id="password" name="password" type="password" required />
-            </div>
-            <Button type="submit" className="w-full min-h-[44px]">Log In</Button>
-          </form>
-        </CardContent>
-        <CardFooter className="flex flex-col gap-4">
-          <p className="text-xs text-center text-muted-foreground mt-4">
+
+            {error && (
+              <Alert variant="destructive" className="bg-destructive/10 border-destructive/20 text-destructive-foreground">
+                <AlertDescription>{error}</AlertDescription>
+              </Alert>
+            )}
+
+            <form action={login} className="flex flex-col gap-5">
+              <div className="grid gap-2">
+                <Label htmlFor="email" className="font-medium">Email address</Label>
+                <Input id="email" name="email" type="email" placeholder="hello@example.com" required className="h-12 bg-secondary/30 border-border/50 focus-visible:ring-accent focus-visible:border-accent" />
+              </div>
+              <div className="grid gap-2">
+                <Label htmlFor="password" className="font-medium">Password</Label>
+                <Input id="password" name="password" type="password" required className="h-12 bg-secondary/30 border-border/50 focus-visible:ring-accent focus-visible:border-accent" />
+              </div>
+              <Button type="submit" className="w-full h-12 mt-2 text-base font-medium shadow-sm hover:shadow-md transition-all">Sign In</Button>
+            </form>
+          </div>
+          
+          <p className="text-sm text-center text-muted-foreground pt-4">
             Don't have an account?{' '}
-            <Link href="/signup" className="underline hover:text-primary">
-              Sign up
+            <Link href="/signup" className="font-semibold text-primary underline underline-offset-4 hover:text-accent transition-colors">
+              Create an account
             </Link>
           </p>
-          <p className="px-8 text-center text-sm text-muted-foreground">
-            By continuing, you agree to our{' '}
-            <Link href="/privacy" className="underline underline-offset-4 hover:text-primary">
-              Terms of Service and Privacy Policy
-            </Link>.
-          </p>
-        </CardFooter>
-      </Card>
+        </div>
+      </div>
     </div>
   );
 }

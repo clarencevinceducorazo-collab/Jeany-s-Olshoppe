@@ -4,7 +4,7 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%; /* White */
+    --background: 40 20% 97%; /* #f9f8f6 subtle off-white */
     --foreground: 22 12% 26%; /* #4a403a Deep Brown */
     --card: 0 0% 100%; /* White */
     --card-foreground: 22 12% 26%;
@@ -12,18 +12,18 @@
     --popover-foreground: 22 12% 26%;
     --primary: 22 12% 26%; /* #4a403a Deep Brown */
     --primary-foreground: 0 0% 98%;
-    --secondary: 220 14% 91%; /* #e5e7eb Light Gray */
+    --secondary: 40 10% 92%; /* Slightly warmer light gray */
     --secondary-foreground: 22 12% 26%;
-    --muted: 220 14% 91%; /* #e5e7eb Light Gray */
-    --muted-foreground: 22 6% 45%; /* Lighter brown for muted text */
-    --accent: 351 95% 71%; /* #fb7185 Pink Accent */
+    --muted: 40 10% 92%; 
+    --muted-foreground: 22 6% 45%; 
+    --accent: 351 95% 71%; /* #fb7185 Original Pink Accent */
     --accent-foreground: 0 0% 100%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
-    --border: 220 14% 91%; /* #e5e7eb Light Gray */
-    --input: 220 14% 91%; /* #e5e7eb Light Gray */
-    --ring: 351 95% 71%; /* #fb7185 Pink Accent */
-    --radius: 0.75rem; /* Slightly softer borders for Japandi feel */
+    --border: 40 10% 90%; /* Warmer border */
+    --input: 40 10% 90%; 
+    --ring: 351 95% 71%; /* Original Pink Accent */
+    --radius: 0.5rem; /* Tighter radius for editorial look */
   }
   .dark {
     --background: 24 10% 12%;

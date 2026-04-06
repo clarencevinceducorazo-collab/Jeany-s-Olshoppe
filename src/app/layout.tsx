@@ -22,7 +22,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${alegreya.variable} font-sans antialiased text-primary`}>
+      <body className={`${alegreya.variable} font-sans antialiased text-primary bg-background selection:bg-accent/20 selection:text-foreground`}>
         {children}
         <Toaster />
       </body>
