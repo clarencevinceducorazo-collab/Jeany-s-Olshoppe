@@ -1,10 +1,10 @@
 import { createClient } from "@/lib/supabase/server";
-import { FacebookLoginButton } from "@/components/facebook-login-button";
 import { Button } from "@/components/ui/button";
-import { User, LogOut, Heart } from "lucide-react";
+import { User, LogOut } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import { redirect } from "next/navigation";
+import { FacebookLoginButton } from "@/components/facebook-login-button";
 
 export default async function MePage() {
   const supabase = await createClient();
@@ -17,9 +17,9 @@ export default async function MePage() {
     return (
       <div className="container max-w-5xl mx-auto px-4 sm:px-6 pt-8 py-16">
         <section>
-          <h2 className="text-xl font-semibold tracking-tight text-[#4a403a] mb-5">Your Profile</h2>
+          <h2 className="text-xl font-semibold tracking-tight text-primary mb-5">Your Profile</h2>
           
-          <div className="bg-white border border-[#e5e7eb] rounded-xl p-5 flex flex-col sm:flex-row items-center gap-5 sm:justify-between shadow-sm">
+          <div className="bg-card border border-border rounded-xl p-5 flex flex-col sm:flex-row items-center gap-5 sm:justify-between shadow-sm">
             <div className="flex items-center gap-4 w-full sm:w-auto">
               {avatar ? (
                 <Image 
@@ -27,32 +27,46 @@ export default async function MePage() {
                   alt="Avatar" 
                   width={48} 
                   height={48} 
-                  className="w-12 h-12 rounded-full object-cover border border-[#e5e7eb] shrink-0" 
+                  className="w-12 h-12 rounded-full object-cover border border-border shrink-0" 
                 />
               ) : (
-                <div className="w-12 h-12 rounded-full bg-[#fb7185]/10 flex items-center justify-center text-[#fb7185] text-lg font-medium border border-[#fb7185]/20 shrink-0">
+                <div className="w-12 h-12 rounded-full bg-accent/10 flex items-center justify-center text-accent text-lg font-medium border border-accent/20 shrink-0">
                   {name ? name.substring(0, 2).toUpperCase() : <User className="h-6 w-6" />}
                 </div>
               )}
               <div>
-                <h3 className="text-sm font-medium text-[#4a403a]">{name}</h3>
+                <h3 className="text-sm font-medium text-primary">{name}</h3>
               </div>
             </div>
             
-            <div className="flex w-full sm:w-auto mt-2 sm:mt-0 border-t border-[#e5e7eb] sm:border-0 pt-4 sm:pt-0">
+            <div className="flex w-full sm:w-auto mt-4 sm:mt-0 border-t border-border sm:border-0 pt-4 sm:pt-0">
               <form action={async () => {
                 "use server";
                 const supabaseAction = await createClient();
                 await supabaseAction.auth.signOut();
                 redirect('/');
               }} className="w-full sm:w-auto">
-                <button type="submit" className="w-full flex-1 sm:flex-none text-xs font-medium text-red-600 bg-red-50 border border-red-100 px-4 py-2 rounded-lg hover:bg-red-100 transition-colors flex justify-center items-center gap-1.5">
-                  <LogOut className="w-4 h-4" />
+                <Button type="submit" className="w-full justify-center text-xs font-medium bg-red-50 border border-red-100 text-red-600 hover:bg-red-100 h-auto px-4 py-2">
+                  <LogOut className="w-4 h-4 mr-1.5" />
                   Log Out
-                </button>
+                </Button>
               </form>
             </div>
           </div>
+        </section>
+
+        <section className="mt-12">
+            <h2 className="text-xl font-semibold tracking-tight text-primary mb-5">Settings</h2>
+            <div className="grid sm:grid-cols-2 gap-4">
+                 <Link href="/saved" className="block p-4 border rounded-lg hover:bg-muted/50 transition-colors">
+                    <h3 className="font-medium">My Wishlist</h3>
+                    <p className="text-sm text-muted-foreground">View and manage your saved items.</p>
+                </Link>
+                <Link href="/privacy" className="block p-4 border rounded-lg hover:bg-muted/50 transition-colors">
+                    <h3 className="font-medium">Privacy Policy</h3>
+                    <p className="text-sm text-muted-foreground">Read our data and privacy information.</p>
+                </Link>
+            </div>
         </section>
       </div>
     );
@@ -61,20 +75,19 @@ export default async function MePage() {
   // Not logged in
   return (
     <div className="container mx-auto px-4 py-8 h-[70vh] flex flex-col items-center justify-center">
-      <div className="w-full max-w-sm flex flex-col gap-6 text-center">
-        <div className="mb-4">
-          <User className="mx-auto h-16 w-16 text-muted-foreground/50 mb-4" />
-          <h2 className="text-2xl font-semibold mb-2">My Profile</h2>
+      <div className="w-full max-w-xs flex flex-col gap-4 text-center">
+          <User className="mx-auto h-12 w-12 text-muted-foreground/50 mb-2" />
+          <h2 className="text-2xl font-semibold">My Profile</h2>
           <p className="text-muted-foreground text-sm">
             Log in to manage your wishlist and account.
           </p>
+        
+        <div className="mt-4 flex flex-col gap-3">
+          <Button asChild>
+            <Link href="/login">Email Login</Link>
+          </Button>
+          <FacebookLoginButton />
         </div>
-        
-        <FacebookLoginButton />
-        
-        <Button asChild variant="ghost" className="mt-2 text-muted-foreground">
-          <Link href="/">Browse as Guest</Link>
-        </Button>
       </div>
     </div>
   );

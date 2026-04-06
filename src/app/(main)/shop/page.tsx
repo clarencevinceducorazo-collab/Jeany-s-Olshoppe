@@ -2,7 +2,6 @@
 
 import { useState, useMemo } from 'react';
 import { ProductGrid } from '@/components/product-grid';
-import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { getProducts } from '@/lib/placeholder-images';
@@ -18,7 +17,15 @@ export default function ShopPage() {
 
   const filteredProducts = useMemo(() => {
     return allProducts
-      .filter(p => p.stock_qty > 0) // Exclude sold out items from filters
+      // The PRD says to exclude sold out from *filter* results.
+      // If any filter is active, we hide sold-out items.
+      .filter(p => {
+        const isFiltering = searchTerm || category !== 'all' || condition !== 'all';
+        if (isFiltering) {
+          return p.stock_qty > 0;
+        }
+        return true;
+      })
       .filter(p => 
         searchTerm ? p.name.toLowerCase().includes(searchTerm.toLowerCase()) : true
       )
@@ -31,16 +38,16 @@ export default function ShopPage() {
   }, [allProducts, searchTerm, category, condition]);
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="text-center mb-8">
-        <h1 className="text-4xl font-bold font-headline">Shop All Products</h1>
-        <p className="text-muted-foreground mt-2">Find your next treasure from our collection of Japan surplus items.</p>
+    <div className="container mx-auto max-w-5xl px-4 sm:px-6 py-8">
+      <div className="text-left mb-8">
+        <h1 className="text-3xl font-semibold tracking-tight">Shop All</h1>
+        <p className="text-muted-foreground mt-2">Find your next treasure from our full collection.</p>
       </div>
 
       <div className="mb-8 p-4 bg-card rounded-lg border shadow-sm">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4 items-end">
           <div className="relative md:col-span-2">
-            <label htmlFor="search" className="block text-sm font-medium mb-1">Search</label>
+            <label htmlFor="search" className="block text-sm font-medium text-muted-foreground mb-1">Keyword</label>
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 transform mt-2.5 h-4 w-4 text-muted-foreground" />
             <Input
               id="search"
@@ -52,7 +59,7 @@ export default function ShopPage() {
             />
           </div>
           <div>
-            <label htmlFor="category" className="block text-sm font-medium mb-1">Category</label>
+            <label htmlFor="category" className="block text-sm font-medium text-muted-foreground mb-1">Category</label>
             <Select value={category} onValueChange={(value) => setCategory(value as ProductCategory | 'all')}>
               <SelectTrigger id="category">
                 <SelectValue placeholder="All Categories" />
@@ -64,7 +71,7 @@ export default function ShopPage() {
             </Select>
           </div>
           <div>
-            <label htmlFor="condition" className="block text-sm font-medium mb-1">Condition</label>
+            <label htmlFor="condition" className="block text-sm font-medium text-muted-foreground mb-1">Condition</label>
              <Select value={condition} onValueChange={(value) => setCondition(value as ProductCondition | 'all')}>
               <SelectTrigger id="condition">
                 <SelectValue placeholder="Any Condition" />

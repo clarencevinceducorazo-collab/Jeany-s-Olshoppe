@@ -16,8 +16,8 @@ export function BottomNav() {
   const pathname = usePathname();
 
   return (
-    <nav className="fixed bottom-0 left-0 z-50 w-full border-t bg-background/95 backdrop-blur-sm md:hidden">
-      <div className="grid h-16 grid-cols-4">
+    <nav className="fixed bottom-0 left-0 z-50 w-full border-t bg-background/90 backdrop-blur-lg md:hidden">
+      <div className="flex h-16 items-center justify-around px-2">
         {navItems.map((item) => {
           const isActive = pathname === item.href;
           return (
@@ -25,12 +25,12 @@ export function BottomNav() {
               key={item.href}
               href={item.href}
               className={cn(
-                'flex flex-col items-center justify-center gap-1 text-xs font-medium transition-colors',
-                isActive ? 'text-primary' : 'text-muted-foreground hover:text-primary'
+                'flex h-full w-full flex-col items-center justify-center gap-1 text-xs font-medium transition-colors',
+                isActive ? 'text-accent' : 'text-foreground/50 hover:text-accent'
               )}
               style={{ WebkitTapHighlightColor: 'transparent' }}
             >
-              <item.icon className="h-6 w-6" strokeWidth={isActive ? 2.5 : 2} />
+              <item.icon className="h-[22px] w-[22px]" strokeWidth={1.5} />
               <span>{item.label}</span>
             </Link>
           );

@@ -1,6 +1,5 @@
-import { NextResponse } from 'next/server'
-import type { NextRequest } from 'next/server'
-import { createServerClient } from '@supabase/ssr'
+import { NextResponse, type NextRequest } from 'next/server'
+import { createServerClient, type CookieOptions } from '@supabase/ssr'
 
 export async function middleware(request: NextRequest) {
   let supabaseResponse = NextResponse.next({
@@ -16,17 +15,20 @@ export async function middleware(request: NextRequest) {
   }
 
   const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
     {
       cookies: {
-        getAll() {
-          return request.cookies.getAll()
+        get(name: string) {
+          return request.cookies.get(name)?.value
         },
-        setAll(cookiesToSet) {
-          cookiesToSet.forEach(({ name, value, options }) =>
-            supabaseResponse.cookies.set(name, value, options)
-          )
+        set(name: string, value: string, options: CookieOptions) {
+          request.cookies.set({ name, value, ...options })
+          supabaseResponse.cookies.set({ name, value, ...options })
+        },
+        remove(name: string, options: CookieOptions) {
+          request.cookies.set({ name, value: '', ...options })
+          supabaseResponse.cookies.set({ name, value: '', ...options })
         },
       },
     }
@@ -40,14 +42,8 @@ export async function middleware(request: NextRequest) {
   if (path.startsWith('/admin') && !path.startsWith('/admin/login')) {
     const adminEmail = process.env.ADMIN_EMAIL || 'admin@example.com' 
     
-    // Admin requirement: must be logged in with matching email AND it must NOT be via facebook
-    if (!user || user.email !== adminEmail) {
-      return NextResponse.redirect(new URL('/admin/login', request.url))
-    }
-    
-    // Check if provider is email (for security, no OAuth)
-    const provider = user.app_metadata?.provider
-    if (provider !== 'email') {
+    // Admin requirement: must be logged in with matching email AND it must NOT be via OAuth
+    if (!user || user.email !== adminEmail || user.app_metadata.provider) {
       return NextResponse.redirect(new URL('/admin/login', request.url))
     }
   }

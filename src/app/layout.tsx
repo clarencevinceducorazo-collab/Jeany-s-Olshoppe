@@ -2,10 +2,13 @@ import type { Metadata } from "next";
 import { Toaster } from "@/components/ui/toaster";
 import "./globals.css";
 
-import { Inter, Alegreya } from 'next/font/google';
+import { Alegreya } from 'next/font/google';
 
-const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
-const alegreya = Alegreya({ subsets: ['latin'], variable: '--font-alegreya' });
+const alegreya = Alegreya({ 
+  subsets: ['latin'], 
+  variable: '--font-alegreya',
+  weight: ['400', '500', '600', '700']
+});
 
 export const metadata: Metadata = {
   title: "Jeanys Olshoppe",
@@ -19,7 +22,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${inter.variable} ${alegreya.variable} font-sans antialiased text-[#4a403a]`}>
+      <body className={`${alegreya.variable} font-sans antialiased text-primary`}>
         {children}
         <Toaster />
       </body>
