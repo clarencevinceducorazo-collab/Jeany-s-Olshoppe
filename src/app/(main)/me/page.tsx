@@ -15,38 +15,45 @@ export default async function MePage() {
     const avatar = user.user_metadata?.avatar_url;
 
     return (
-      <div className="container mx-auto px-4 py-8">
-        <div className="flex flex-col items-center justify-center py-10">
-          <div className="h-32 w-32 overflow-hidden rounded-full border-4 border-background shadow-lg mb-4">
-            {avatar ? (
-              <Image src={avatar} alt="Profile Photo" width={128} height={128} className="object-cover h-full w-full" />
-            ) : (
-              <User className="h-full w-full p-4 bg-muted text-muted-foreground" />
-            )}
-          </div>
-          <h1 className="text-3xl font-bold font-headline mb-8">{name}</h1>
-
-          <div className="flex w-full max-w-sm flex-col gap-4">
-            <Button asChild size="lg" className="justify-start gap-4" variant="outline">
-              <Link href="/saved">
-                <Heart className="h-5 w-5" />
-                My Wishlist
-              </Link>
-            </Button>
+      <div className="container max-w-5xl mx-auto px-4 sm:px-6 pt-8 py-16">
+        <section>
+          <h2 className="text-xl font-semibold tracking-tight text-[#4a403a] mb-5">Your Profile</h2>
+          
+          <div className="bg-white border border-[#e5e7eb] rounded-xl p-5 flex flex-col sm:flex-row items-center gap-5 sm:justify-between shadow-sm">
+            <div className="flex items-center gap-4 w-full sm:w-auto">
+              {avatar ? (
+                <Image 
+                  src={avatar} 
+                  alt="Avatar" 
+                  width={48} 
+                  height={48} 
+                  className="w-12 h-12 rounded-full object-cover border border-[#e5e7eb] shrink-0" 
+                />
+              ) : (
+                <div className="w-12 h-12 rounded-full bg-[#fb7185]/10 flex items-center justify-center text-[#fb7185] text-lg font-medium border border-[#fb7185]/20 shrink-0">
+                  {name ? name.substring(0, 2).toUpperCase() : <User className="h-6 w-6" />}
+                </div>
+              )}
+              <div>
+                <h3 className="text-sm font-medium text-[#4a403a]">{name}</h3>
+              </div>
+            </div>
             
-            <form action={async () => {
-              "use server";
-              const supabaseAction = await createClient();
-              await supabaseAction.auth.signOut();
-              redirect('/');
-            }}>
-              <Button type="submit" size="lg" className="w-full justify-start gap-4" variant="destructive">
-                <LogOut className="h-5 w-5" />
-                Sign Out
-              </Button>
-            </form>
+            <div className="flex w-full sm:w-auto mt-2 sm:mt-0 border-t border-[#e5e7eb] sm:border-0 pt-4 sm:pt-0">
+              <form action={async () => {
+                "use server";
+                const supabaseAction = await createClient();
+                await supabaseAction.auth.signOut();
+                redirect('/');
+              }} className="w-full sm:w-auto">
+                <button type="submit" className="w-full flex-1 sm:flex-none text-xs font-medium text-red-600 bg-red-50 border border-red-100 px-4 py-2 rounded-lg hover:bg-red-100 transition-colors flex justify-center items-center gap-1.5">
+                  <LogOut className="w-4 h-4" />
+                  Log Out
+                </button>
+              </form>
+            </div>
           </div>
-        </div>
+        </section>
       </div>
     );
   }

@@ -3,11 +3,16 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
-
 import { FacebookLoginButton } from "@/components/facebook-login-button";
-import { Separator } from "@/components/ui/separator";
+import { login } from "@/app/auth/actions";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 
-export default function LoginPage() {
+type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>;
+
+export default async function LoginPage(props: { searchParams: SearchParams }) {
+  const searchParams = await props.searchParams;
+  const error = searchParams.error as string | undefined;
+
   return (
     <div className="flex min-h-screen items-center justify-center bg-background p-4">
       <Card className="w-full max-w-sm">
@@ -29,18 +34,26 @@ export default function LoginPage() {
             </div>
           </div>
 
-          <div className="grid gap-2">
-            <Label htmlFor="email">Email</Label>
-            <Input id="email" type="email" placeholder="m@example.com" required />
-          </div>
-          <div className="grid gap-2">
-            <Label htmlFor="password">Password</Label>
-            <Input id="password" type="password" required />
-          </div>
+          {error && (
+            <Alert variant="destructive">
+              <AlertDescription>{error}</AlertDescription>
+            </Alert>
+          )}
+
+          <form action={login} className="grid gap-4">
+            <div className="grid gap-2">
+              <Label htmlFor="email">Email</Label>
+              <Input id="email" name="email" type="email" placeholder="m@example.com" required />
+            </div>
+            <div className="grid gap-2">
+              <Label htmlFor="password">Password</Label>
+              <Input id="password" name="password" type="password" required />
+            </div>
+            <Button type="submit" className="w-full min-h-[44px]">Log In</Button>
+          </form>
         </CardContent>
         <CardFooter className="flex flex-col gap-4">
-          <Button className="w-full min-h-[44px]">Log In</Button>
-          <p className="text-xs text-center text-muted-foreground">
+          <p className="text-xs text-center text-muted-foreground mt-4">
             Don't have an account?{' '}
             <Link href="/signup" className="underline hover:text-primary">
               Sign up

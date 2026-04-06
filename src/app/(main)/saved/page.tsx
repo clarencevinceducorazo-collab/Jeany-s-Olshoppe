@@ -3,10 +3,13 @@ import { Button } from "@/components/ui/button";
 import { getProducts } from "@/lib/placeholder-images";
 import { Heart } from "lucide-react";
 import Link from "next/link";
+import { createClient } from "@/lib/supabase/server";
 
-export default function SavedPage() {
-  // This should check if user is logged in.
-  const isLoggedIn = false;
+export default async function SavedPage() {
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  const isLoggedIn = !!user;
+
   // This would be fetched from the database based on the user's wishlist.
   const savedProducts = getProducts({ limit: 2 }); 
 
