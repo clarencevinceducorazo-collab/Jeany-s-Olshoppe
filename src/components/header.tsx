@@ -56,18 +56,20 @@ export function Header() {
               <span className="sr-only">Search</span>
             </Link>
           </Button>
-          <Button variant="ghost" size="icon" asChild className="hover:bg-secondary rounded-full">
-            <Link href="/saved">
-              <Heart className="h-[18px] w-[18px] text-foreground/80 transition-colors" />
-              <span className="sr-only">Wishlist</span>
-            </Link>
-          </Button>
-           <Button variant="ghost" size="icon" asChild className="hover:bg-secondary rounded-full">
-            <Link href="/me">
-              <User className="h-[18px] w-[18px] text-foreground/80 transition-colors" />
-              <span className="sr-only">My Account</span>
-            </Link>
-          </Button>
+          <div className="hidden md:flex items-center gap-2">
+            <Button variant="ghost" size="icon" asChild className="hover:bg-secondary rounded-full">
+              <Link href="/saved">
+                <Heart className="h-[18px] w-[18px] text-foreground/80 transition-colors" />
+                <span className="sr-only">Wishlist</span>
+              </Link>
+            </Button>
+            <Button variant="ghost" size="icon" asChild className="hover:bg-secondary rounded-full">
+              <Link href="/me">
+                <User className="h-[18px] w-[18px] text-foreground/80 transition-colors" />
+                <span className="sr-only">My Account</span>
+              </Link>
+            </Button>
+          </div>
         </div>
       </div>
     </header>

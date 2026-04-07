@@ -9,8 +9,7 @@ export default function MainLayout({
   return (
     <div className="flex min-h-screen flex-col">
       <Header />
-      <main className="flex-1">{children}</main>
-      <div className="h-16 md:hidden" /> {/* Spacer for bottom nav */}
+      <main className="flex-1 pb-24 md:pb-0">{children}</main>
       <BottomNav />
     </div>
   );

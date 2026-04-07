@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Home, ShoppingBag, Heart, User } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { motion } from 'framer-motion';
 
 const navItems = [
   { href: '/', icon: Home, label: 'Home' },
@@ -16,22 +17,36 @@ export function BottomNav() {
   const pathname = usePathname();
 
   return (
-    <nav className="fixed bottom-0 left-0 z-50 w-full border-t bg-background/90 backdrop-blur-lg md:hidden">
-      <div className="flex h-16 items-center justify-around px-2">
+    <nav className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 w-[92%] max-w-sm md:hidden">
+      <div className="flex h-16 items-center justify-around px-2 rounded-full bg-background/80 backdrop-blur-xl border border-border/50 shadow-lg shadow-black/5">
         {navItems.map((item) => {
           const isActive = pathname === item.href;
           return (
             <Link
               key={item.href}
               href={item.href}
-              className={cn(
-                'flex h-full w-full flex-col items-center justify-center gap-1 text-xs font-medium transition-colors',
-                isActive ? 'text-accent' : 'text-foreground/50 hover:text-accent'
-              )}
+              className="relative flex h-full w-full flex-col items-center justify-center gap-1 z-10"
               style={{ WebkitTapHighlightColor: 'transparent' }}
             >
-              <item.icon className="h-[22px] w-[22px]" strokeWidth={1.5} />
-              <span>{item.label}</span>
+              {isActive && (
+                <motion.div
+                  layoutId="bottom-nav-indicator"
+                  className="absolute inset-2 bg-secondary/50 rounded-full -z-10"
+                  transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                />
+              )}
+              <item.icon 
+                className={cn(
+                  "h-[22px] w-[22px] transition-all duration-300", 
+                  isActive ? "text-accent stroke-[2]" : "text-foreground/50 stroke-[1.5]"
+                )} 
+              />
+              <span className={cn(
+                "text-[10px] font-semibold transition-all duration-300",
+                isActive ? "text-foreground opacity-100" : "text-foreground/50 opacity-0 -translate-y-2 pointer-events-none absolute"
+              )}>
+                {item.label}
+              </span>
             </Link>
           );
         })}
