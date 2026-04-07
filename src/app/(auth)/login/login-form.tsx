@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -29,7 +30,7 @@ export function LoginForm() {
 
   const showSuccess = (message: string) => {
     setIsSuccessMode(true);
-    setModalTitle("Success");
+    setModalTitle("Welcome back, friend!");
     setModalMessage(message);
     setIsModalOpen(true);
   };
@@ -53,13 +54,12 @@ export function LoginForm() {
 
       if (!result?.success) {
         showError(result?.error || "Incorrect login credentials.");
-        setPassword(""); // Clear password on failure to mimic smooth UX
+        setPassword(""); 
       } else {
-        showSuccess(result.message || "Welcome back.");
-        // Redirect after delay
+        showSuccess("We are so happy to see you again at Jeanys Olshoppe.");
         setTimeout(() => {
           router.push('/');
-        }, 1500);
+        }, 2000);
       }
     } catch (err: any) {
       setIsSubmitting(false);
@@ -84,21 +84,25 @@ export function LoginForm() {
       </form>
 
       <Dialog open={isModalOpen} onOpenChange={(open) => !isSuccessMode && setIsModalOpen(open)}>
-        <DialogContent className="sm:max-w-md">
-          <DialogHeader className="flex flex-col items-center sm:items-start">
-            {isSuccessMode && <CheckCircle2 className="h-12 w-12 text-accent mb-4 mx-auto sm:mx-0 animate-in zoom-in" />}
-            <DialogTitle className={`font-headline text-2xl ${isSuccessMode ? 'text-primary' : 'text-destructive'}`}>
+        <DialogContent className="sm:max-w-md bg-background/95 backdrop-blur-md">
+          <DialogHeader className="flex flex-col items-center">
+            {isSuccessMode ? (
+              <div className="w-20 h-20 relative rounded-full overflow-hidden mb-4 border-2 border-accent/30 shadow-lg animate-in zoom-in duration-500">
+                <Image src="/favicon.ico" alt="Owner" fill className="object-cover" />
+              </div>
+            ) : null}
+            <DialogTitle className={`font-headline text-2xl text-center ${isSuccessMode ? 'text-primary' : 'text-destructive'}`}>
                {modalTitle}
             </DialogTitle>
-            <DialogDescription className={`text-base pt-2 ${isSuccessMode ? 'text-center sm:text-left' : ''}`}>
+            <DialogDescription className={`text-base pt-2 text-center`}>
               {modalMessage}
             </DialogDescription>
           </DialogHeader>
-          <DialogFooter className="sm:justify-start pt-2">
+          <DialogFooter className="sm:justify-center pt-2">
             {!isSuccessMode && (
               <DialogClose asChild>
-                <Button type="button" variant="secondary">
-                  Close
+                <Button type="button" variant="secondary" className="w-full sm:w-auto">
+                  Try Again
                 </Button>
               </DialogClose>
             )}
