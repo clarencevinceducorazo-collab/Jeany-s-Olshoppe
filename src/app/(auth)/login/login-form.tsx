@@ -56,10 +56,7 @@ export function LoginForm() {
         showError(result?.error || "Incorrect login credentials.");
         setPassword(""); 
       } else {
-        showSuccess("We are so happy to see you again at Jeanys Olshoppe.");
-        setTimeout(() => {
-          router.push('/');
-        }, 2000);
+        router.push('/?login=success');
       }
     } catch (err: any) {
       setIsSubmitting(false);

@@ -63,11 +63,7 @@ export function SignupForm() {
       if (!result?.success) {
         showError(result?.error || "An unknown error occurred");
       } else {
-        showSuccess(result.message || "Please check your email to continue.");
-        // Redirect after 2.5 seconds
-        setTimeout(() => {
-          router.push('/login');
-        }, 2500);
+        router.push('/?signup=success');
       }
     } catch (err: any) {
       setIsSubmitting(false);
