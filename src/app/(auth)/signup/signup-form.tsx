@@ -63,8 +63,7 @@ export function SignupForm() {
       if (!result?.success) {
         showError(result?.error || "An unknown error occurred");
       } else {
-        router.refresh();
-        router.push('/?signup=success');
+        window.location.href = '/?signup=success';
       }
     } catch (err: any) {
       setIsSubmitting(false);

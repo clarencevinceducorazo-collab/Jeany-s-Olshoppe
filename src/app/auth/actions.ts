@@ -3,6 +3,8 @@
 import { createClient } from '@/lib/supabase/server'
 import { headers } from 'next/headers'
 
+import { revalidatePath } from 'next/cache'
+
 export async function login(formData: FormData) {
   const email = formData.get('email') as string
   const password = formData.get('password') as string
@@ -22,6 +24,7 @@ export async function login(formData: FormData) {
     return { success: false, error: error.message }
   }
 
+  revalidatePath('/', 'layout')
   return { success: true, message: 'Welcome back' }
 }
 

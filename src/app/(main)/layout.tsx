@@ -2,6 +2,8 @@ import { BottomNav } from "@/components/bottom-nav";
 import { Header } from "@/components/header";
 import { getUserRole } from "@/lib/get-user-role";
 
+export const dynamic = 'force-dynamic';
+
 export default async function MainLayout({
   children,
 }: {
