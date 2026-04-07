@@ -56,6 +56,7 @@ export function LoginForm() {
         showError(result?.error || "Incorrect login credentials.");
         setPassword(""); 
       } else {
+        router.refresh();
         router.push('/?login=success');
       }
     } catch (err: any) {
