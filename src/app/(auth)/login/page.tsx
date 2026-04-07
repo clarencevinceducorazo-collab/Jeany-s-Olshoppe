@@ -3,7 +3,6 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
 import { FacebookLoginButton } from "@/components/facebook-login-button";
-import { GoogleLoginButton } from "@/components/google-login-button";
 import { login } from "@/app/auth/actions";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { ArrowLeft } from "lucide-react";
@@ -38,7 +37,6 @@ export default async function LoginPage(props: { searchParams: SearchParams }) {
           </div>
 
           <div className="flex flex-col gap-4">
-            <GoogleLoginButton />
             <FacebookLoginButton />
             
             <div className="relative my-4">
