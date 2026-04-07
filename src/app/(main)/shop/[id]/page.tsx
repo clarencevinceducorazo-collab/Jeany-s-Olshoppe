@@ -96,7 +96,7 @@ export default function ProductPage({ params }: ProductPageProps) {
           <Separator className="my-2" />
 
           {/* Action Buttons */}
-          <div className="flex flex-col gap-3 sm:bg-transparent sm:p-0 bg-background fixed bottom-0 left-0 right-0 p-4 border-t sm:static sm:border-0">
+          <div className="flex flex-col gap-3 sm:bg-transparent sm:p-0 bg-background fixed bottom-0 left-0 right-0 p-4 pb-28 border-t sm:static sm:border-0 z-40">
             <Button size="lg" className="w-full h-11" disabled={isSoldOut}>
               <Heart className="mr-2 h-5 w-5" />
               Add to Wishlist

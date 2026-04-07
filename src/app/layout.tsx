@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Toaster } from "@/components/ui/toaster";
+import { WelcomeModal } from "@/components/welcome-modal";
 import "./globals.css";
 
 import { Alegreya } from 'next/font/google';
@@ -24,6 +25,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={`${alegreya.variable} font-sans antialiased text-primary bg-background selection:bg-accent/20 selection:text-foreground`}>
         {children}
+        <WelcomeModal />
         <Toaster />
       </body>
     </html>
