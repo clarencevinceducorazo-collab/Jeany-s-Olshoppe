@@ -7,11 +7,14 @@ import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import { motion } from 'framer-motion';
 
-export function Header() {
+import { UserRole } from '@/lib/get-user-role';
+
+export function Header({ role }: { role: UserRole }) {
   const pathname = usePathname();
   const navLinks = [
     { href: '/', label: 'Home' },
     { href: '/shop', label: 'Shop' },
+    ...(role === 'admin' || role === 'super_admin' ? [{ href: '/admin', label: 'Admin Panel' }] : []),
   ];
 
   return (

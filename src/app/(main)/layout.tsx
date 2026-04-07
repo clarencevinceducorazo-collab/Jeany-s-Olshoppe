@@ -1,16 +1,19 @@
 import { BottomNav } from "@/components/bottom-nav";
 import { Header } from "@/components/header";
+import { getUserRole } from "@/lib/get-user-role";
 
-export default function MainLayout({
+export default async function MainLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const role = await getUserRole();
+
   return (
     <div className="flex min-h-screen flex-col">
-      <Header />
+      <Header role={role} />
       <main className="flex-1 pb-24 md:pb-0">{children}</main>
-      <BottomNav />
+      <BottomNav role={role} />
     </div>
   );
 }

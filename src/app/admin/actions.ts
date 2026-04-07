@@ -1,0 +1,145 @@
+'use server'
+
+import { createClient } from '@/lib/supabase/server'
+import { revalidatePath } from 'next/cache'
+import { redirect } from 'next/navigation'
+import { isSuperAdmin, isAdmin } from '@/lib/get-user-role'
+
+// ─── Product Actions ───────────────────────────────────────────────
+
+export async function createProduct(formData: FormData) {
+  if (!(await isAdmin())) redirect('/login')
+
+  const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+
+  const name = formData.get('name') as string
+  const description = formData.get('description') as string
+  const price = parseFloat(formData.get('price') as string)
+  const category = formData.get('category') as string
+  const condition = formData.get('condition') as string
+  const stock_qty = parseInt(formData.get('stock_qty') as string) || 1
+  const is_featured = formData.get('is_featured') === 'on'
+  const imageFiles = formData.getAll('images') as File[]
+
+  if (!name || isNaN(price)) {
+    return { success: false, error: 'Name and price are required' }
+  }
+
+  // Upload images to Supabase Storage
+  const imageUrls: string[] = []
+  for (const file of imageFiles) {
+    if (file.size === 0) continue
+    const fileName = `${Date.now()}-${file.name.replace(/\s/g, '_')}`
+    const { data, error } = await supabase.storage
+      .from('product-images')
+      .upload(fileName, file, { contentType: file.type })
+
+    if (error) return { success: false, error: `Image upload failed: ${error.message}` }
+
+    const { data: urlData } = supabase.storage
+      .from('product-images')
+      .getPublicUrl(data.path)
+    imageUrls.push(urlData.publicUrl)
+  }
+
+  const { error } = await supabase.from('products').insert({
+    name,
+    description,
+    price,
+    category,
+    condition,
+    stock_qty,
+    is_featured,
+    images: imageUrls,
+    created_by: user?.id,
+  })
+
+  if (error) return { success: false, error: error.message }
+
+  revalidatePath('/admin/products')
+  revalidatePath('/shop')
+  revalidatePath('/')
+  return { success: true }
+}
+
+export async function updateProduct(id: string, formData: FormData) {
+  if (!(await isAdmin())) redirect('/login')
+
+  const supabase = await createClient()
+
+  const name = formData.get('name') as string
+  const description = formData.get('description') as string
+  const price = parseFloat(formData.get('price') as string)
+  const category = formData.get('category') as string
+  const condition = formData.get('condition') as string
+  const stock_qty = parseInt(formData.get('stock_qty') as string) || 1
+  const is_featured = formData.get('is_featured') === 'on'
+  const is_archived = formData.get('is_archived') === 'on'
+  const existingImages = formData.getAll('existing_images') as string[]
+  const imageFiles = formData.getAll('images') as File[]
+
+  const imageUrls = [...existingImages]
+  for (const file of imageFiles) {
+    if (file.size === 0) continue
+    const fileName = `${Date.now()}-${file.name.replace(/\s/g, '_')}`
+    const { data, error } = await supabase.storage
+      .from('product-images')
+      .upload(fileName, file)
+    if (error) return { success: false, error: error.message }
+    const { data: urlData } = supabase.storage.from('product-images').getPublicUrl(data.path)
+    imageUrls.push(urlData.publicUrl)
+  }
+
+  const { error } = await supabase.from('products').update({
+    name, description, price, category, condition, stock_qty,
+    is_featured, is_archived, images: imageUrls,
+  }).eq('id', id)
+
+  if (error) return { success: false, error: error.message }
+
+  revalidatePath('/admin/products')
+  revalidatePath('/shop')
+  return { success: true }
+}
+
+export async function archiveProduct(id: string, archive: boolean) {
+  if (!(await isAdmin())) redirect('/login')
+  const supabase = await createClient()
+  const { error } = await supabase.from('products').update({ is_archived: archive }).eq('id', id)
+  if (error) return { success: false, error: error.message }
+  revalidatePath('/admin/products')
+  revalidatePath('/shop')
+  return { success: true }
+}
+
+export async function deleteProduct(id: string) {
+  if (!(await isSuperAdmin())) return { success: false, error: 'Unauthorized' }
+  const supabase = await createClient()
+  const { error } = await supabase.from('products').delete().eq('id', id)
+  if (error) return { success: false, error: error.message }
+  revalidatePath('/admin/products')
+  revalidatePath('/shop')
+  return { success: true }
+}
+
+// ─── User / Role Actions ──────────────────────────────────────────
+
+export async function updateUserRole(userId: string, role: 'user' | 'admin' | 'super_admin') {
+  if (!(await isSuperAdmin())) return { success: false, error: 'Unauthorized' }
+  const supabase = await createClient()
+  const { error } = await supabase.from('profiles').update({ role }).eq('id', userId)
+  if (error) return { success: false, error: error.message }
+  revalidatePath('/admin/users')
+  return { success: true }
+}
+
+export async function deleteUser(userId: string) {
+  if (!(await isSuperAdmin())) return { success: false, error: 'Unauthorized' }
+  const supabase = await createClient()
+  // Deleting from auth.users cascades to profiles
+  const { error } = await supabase.auth.admin.deleteUser(userId)
+  if (error) return { success: false, error: error.message }
+  revalidatePath('/admin/users')
+  return { success: true }
+}
