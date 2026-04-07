@@ -6,14 +6,13 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogFooter, DialogClose } from "@/components/ui/dialog";
-import { signup } from "@/app/auth/actions";
+import { login } from "@/app/auth/actions";
 import { CheckCircle2 } from "lucide-react";
 
-export function SignupForm() {
+export function LoginForm() {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
   
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalTitle, setModalTitle] = useState("");
@@ -23,14 +22,14 @@ export function SignupForm() {
 
   const showError = (message: string) => {
     setIsSuccessMode(false);
-    setModalTitle("Signup Error");
+    setModalTitle("Login Error");
     setModalMessage(message);
     setIsModalOpen(true);
   };
 
   const showSuccess = (message: string) => {
     setIsSuccessMode(true);
-    setModalTitle("Account Created");
+    setModalTitle("Success");
     setModalMessage(message);
     setIsModalOpen(true);
   };
@@ -38,15 +37,8 @@ export function SignupForm() {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (!email.trim() || !password || !confirmPassword) {
-      showError("All fields must be filled out to continue.");
-      return;
-    }
-
-    if (password !== confirmPassword) {
-      showError("Passwords do not match. Please try again.");
-      setPassword("");
-      setConfirmPassword("");
+    if (!email.trim() || !password) {
+      showError("Please enter both your email and password.");
       return;
     }
 
@@ -54,20 +46,20 @@ export function SignupForm() {
     const formData = new FormData();
     formData.append("email", email);
     formData.append("password", password);
-    formData.append("confirm-password", confirmPassword);
     
     try {
-      const result = await signup(formData);
+      const result = await login(formData);
       setIsSubmitting(false);
 
       if (!result?.success) {
-        showError(result?.error || "An unknown error occurred");
+        showError(result?.error || "Incorrect login credentials.");
+        setPassword(""); // Clear password on failure to mimic smooth UX
       } else {
-        showSuccess(result.message || "Please check your email to continue.");
-        // Redirect after 2.5 seconds
+        showSuccess(result.message || "Welcome back.");
+        // Redirect after delay
         setTimeout(() => {
-          router.push('/login');
-        }, 2500);
+          router.push('/');
+        }, 1500);
       }
     } catch (err: any) {
       setIsSubmitting(false);
@@ -86,12 +78,8 @@ export function SignupForm() {
           <Label htmlFor="password" className="font-medium">Password</Label>
           <Input id="password" name="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} className="h-12 bg-secondary/30 border-border/50 focus-visible:ring-accent focus-visible:border-accent" />
         </div>
-        <div className="grid gap-2">
-          <Label htmlFor="confirm-password" className="font-medium">Confirm password</Label>
-          <Input id="confirm-password" name="confirm-password" type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} className="h-12 bg-secondary/30 border-border/50 focus-visible:ring-accent focus-visible:border-accent" />
-        </div>
         <Button type="submit" disabled={isSubmitting} className="w-full h-12 mt-2 text-base font-medium shadow-sm hover:shadow-md transition-all">
-            {isSubmitting ? "Creating Account..." : "Create Account"}
+            {isSubmitting ? "Signing in..." : "Sign In"}
         </Button>
       </form>
 

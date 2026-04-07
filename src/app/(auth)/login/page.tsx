@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { LoginForm } from "./login-form";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
@@ -56,17 +57,7 @@ export default async function LoginPage(props: { searchParams: SearchParams }) {
               </Alert>
             )}
 
-            <form action={login} className="flex flex-col gap-5">
-              <div className="grid gap-2">
-                <Label htmlFor="email" className="font-medium">Email address</Label>
-                <Input id="email" name="email" type="email" placeholder="hello@example.com" required className="h-12 bg-secondary/30 border-border/50 focus-visible:ring-accent focus-visible:border-accent" />
-              </div>
-              <div className="grid gap-2">
-                <Label htmlFor="password" className="font-medium">Password</Label>
-                <Input id="password" name="password" type="password" required className="h-12 bg-secondary/30 border-border/50 focus-visible:ring-accent focus-visible:border-accent" />
-              </div>
-              <Button type="submit" className="w-full h-12 mt-2 text-base font-medium shadow-sm hover:shadow-md transition-all">Sign In</Button>
-            </form>
+            <LoginForm />
           </div>
           
           <p className="text-sm text-center text-muted-foreground pt-4">

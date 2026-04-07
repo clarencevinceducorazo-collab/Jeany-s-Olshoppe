@@ -1,7 +1,6 @@
 'use server'
 
 import { createClient } from '@/lib/supabase/server'
-import { redirect } from 'next/navigation'
 import { headers } from 'next/headers'
 
 export async function login(formData: FormData) {
@@ -9,7 +8,7 @@ export async function login(formData: FormData) {
   const password = formData.get('password') as string
   
   if (!email || !password) {
-    redirect('/login?error=Email and password are required')
+    return { success: false, error: 'Email and password are required' }
   }
 
   const supabase = await createClient()
@@ -20,10 +19,10 @@ export async function login(formData: FormData) {
   })
 
   if (error) {
-    redirect(`/login?error=${encodeURIComponent(error.message)}`)
+    return { success: false, error: error.message }
   }
 
-  redirect('/')
+  return { success: true, message: 'Welcome back' }
 }
 
 export async function signup(formData: FormData) {
@@ -32,11 +31,11 @@ export async function signup(formData: FormData) {
   const confirmPassword = formData.get('confirm-password') as string
 
   if (!email || !password || !confirmPassword) {
-    redirect('/signup?error=All fields are required')
+    return { success: false, error: 'All fields are required' }
   }
 
   if (password !== confirmPassword) {
-    redirect('/signup?error=Passwords do not match')
+    return { success: false, error: 'Passwords do not match' }
   }
 
   const supabase = await createClient()
@@ -51,8 +50,8 @@ export async function signup(formData: FormData) {
   })
 
   if (error) {
-    redirect(`/signup?error=${encodeURIComponent(error.message)}`)
+    return { success: false, error: error.message }
   }
 
-  redirect('/signup?message=Check your email to continue sign in process')
+  return { success: true, message: 'Check your email to continue sign in process' }
 }
