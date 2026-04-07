@@ -19,7 +19,7 @@ export function Header() {
       <div className="container mx-auto flex h-20 max-w-6xl items-center justify-between px-4 sm:px-6">
         <div className="flex items-center gap-12">
           <Link href="/" className="text-xl font-headline font-semibold tracking-[0.2em] text-primary uppercase">
-            Jeanys
+            Jeanys Olshoppe
           </Link>
           <nav className="hidden md:flex items-center gap-8 text-sm">
             {navLinks.map((link) => {
