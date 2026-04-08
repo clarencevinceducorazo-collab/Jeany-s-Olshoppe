@@ -32,6 +32,9 @@ export async function signup(formData: FormData) {
   const email = formData.get('email') as string
   const password = formData.get('password') as string
   const confirmPassword = formData.get('confirm-password') as string
+  const firstName = formData.get('first_name') as string || ''
+  const lastName = formData.get('last_name') as string || ''
+  const location = formData.get('location') as string || ''
 
   if (!email || !password || !confirmPassword) {
     return { success: false, error: 'All fields are required' }
@@ -49,6 +52,12 @@ export async function signup(formData: FormData) {
     password,
     options: {
       emailRedirectTo: `${origin}/auth/callback`,
+      data: {
+        first_name: firstName,
+        last_name: lastName,
+        full_name: `${firstName} ${lastName}`.trim(),
+        location: location,
+      }
     },
   })
 
