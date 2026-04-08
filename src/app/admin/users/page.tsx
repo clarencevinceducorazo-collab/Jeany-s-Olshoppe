@@ -17,7 +17,7 @@ export default async function AdminUsersPage() {
     .order('created_at', { ascending: false })
 
   return (
-    <div className="p-8 max-w-5xl">
+    <div className="p-4 md:p-8 max-w-5xl mx-auto w-full">
       <div className="flex items-center gap-3 mb-8">
         <ShieldAlert className="w-8 h-8 text-red-400" />
         <div>
@@ -28,8 +28,8 @@ export default async function AdminUsersPage() {
       
       <CreateAdminForm />
 
-      <div className="bg-white/5 border border-white/5 rounded-xl overflow-hidden">
-        <table className="w-full text-left text-sm text-white/60">
+      <div className="bg-white/5 border border-white/5 rounded-xl overflow-x-auto w-full">
+        <table className="w-full min-w-[600px] text-left text-sm text-white/60">
           <thead className="bg-white/5 text-xs uppercase text-white/40 font-mono">
             <tr>
               <th className="px-6 py-4">Account ID</th>
