@@ -1,20 +1,10 @@
-import { createServerClient } from '@supabase/ssr'
-import { cookies } from 'next/headers'
+import { createClient } from '@/lib/supabase/server'
 
 export type UserRole = 'user' | 'admin' | 'super_admin' | null
 
 export async function getUserRole(): Promise<UserRole> {
   try {
-    const cookieStore = await cookies()
-    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
-    const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-    
-    const supabase = createServerClient(supabaseUrl, anonKey, {
-      cookies: {
-        getAll() { return cookieStore.getAll() },
-        setAll() {} 
-      }
-    })
+    const supabase = await createClient()
 
     const { data: { user }, error: authError } = await supabase.auth.getUser()
     
@@ -32,7 +22,8 @@ export async function getUserRole(): Promise<UserRole> {
        return 'user';
     }
 
-    return (profile?.role as UserRole) ?? 'user'
+    const roleString = typeof profile?.role === 'string' ? profile.role.toLowerCase() : 'user';
+    return (roleString as UserRole) ?? 'user';
   } catch (err) {
     return null
   }

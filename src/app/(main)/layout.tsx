@@ -12,7 +12,7 @@ export default async function MainLayout({
   const role = await getUserRole();
 
   return (
-    <div className="flex min-h-screen flex-col">
+    <div className="flex min-h-screen flex-col relative">
       <Header role={role} />
       <main className="flex-1 pb-24 md:pb-0">{children}</main>
       <BottomNav role={role} />
