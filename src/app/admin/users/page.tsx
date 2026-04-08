@@ -1,8 +1,9 @@
 import { createClient } from '@/lib/supabase/server'
 import { getUserRole } from '@/lib/get-user-role'
 import { redirect } from 'next/navigation'
-import { ShieldAlert, Trash2 } from 'lucide-react'
-import { updateUserRole, deleteUser } from '../actions'
+import { ShieldAlert } from 'lucide-react'
+import { UserRoleSelector, UserDeleteButton } from './user-controls'
+import { CreateAdminForm } from './create-admin-form'
 
 export default async function AdminUsersPage() {
   const role = await getUserRole()
@@ -24,6 +25,8 @@ export default async function AdminUsersPage() {
           <p className="text-white/40 text-sm mt-1">Manage platform roles and accounts.</p>
         </div>
       </div>
+      
+      <CreateAdminForm />
 
       <div className="bg-white/5 border border-white/5 rounded-xl overflow-hidden">
         <table className="w-full text-left text-sm text-white/60">
@@ -46,44 +49,11 @@ export default async function AdminUsersPage() {
                   <p className="text-xs text-white/40">{person.email}</p>
                 </td>
                 <td className="px-6 py-4">
-                  <form className="flex items-center gap-2">
-                      <select 
-                        name="role" 
-                        defaultValue={person.role}
-                        className={`bg-[#0a0807] border rounded px-2 py-1 text-xs uppercase tracking-wider outline-none focus:ring-1 focus:ring-red-400
-                          ${person.role === 'super_admin' ? 'border-red-400/50 text-red-400' : 
-                            person.role === 'admin' ? 'border-yellow-400/50 text-yellow-400' : 
-                            'border-white/10 text-white/50'}`}
-                        onChange={(e) => {
-                          const form = e.target.form;
-                          if(form && confirm(`Change this user's role to ${e.target.value}?`)) {
-                             updateUserRole(person.id, e.target.value as any).then(() => {
-                                window.location.reload();
-                             })
-                          }
-                        }}
-                    >
-                      <option value="user">User</option>
-                      <option value="admin">Admin</option>
-                      <option value="super_admin">Super Admin</option>
-                    </select>
-                  </form>
+                  <UserRoleSelector person={person} />
                 </td>
                 <td className="px-6 py-4">
                   <div className="flex items-center justify-end">
-                    <form action={deleteUser.bind(null, person.id)} onSubmit={(e) => {
-                        if(!confirm("Are you sure? This will PERMANENTLY delete this user's account and all associated data.")) {
-                            e.preventDefault();
-                        }
-                    }}>
-                      <button 
-                        disabled={person.role === 'super_admin'}
-                        title={person.role === 'super_admin' ? "Cannot delete other super admins" : "Delete permanently"} 
-                        className="p-2 rounded-lg bg-red-500/10 hover:bg-red-500/20 text-red-400/50 hover:text-red-400 transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
-                      >
-                        <Trash2 className="w-4 h-4" />
-                      </button>
-                    </form>
+                    <UserDeleteButton person={person} />
                   </div>
                 </td>
               </tr>

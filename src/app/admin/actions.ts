@@ -136,10 +136,76 @@ export async function updateUserRole(userId: string, role: 'user' | 'admin' | 's
 
 export async function deleteUser(userId: string) {
   if (!(await isSuperAdmin())) return { success: false, error: 'Unauthorized' }
+  
+  const adminAuthClient = require('@supabase/supabase-js').createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!,
+    { auth: { autoRefreshToken: false, persistSession: false } }
+  )
+  
+  // Deleting from auth.users cascades to people usually, but we delete from people to be safe
   const supabase = await createClient()
-  // Deleting from auth.users cascades to profiles
-  const { error } = await supabase.auth.admin.deleteUser(userId)
+  await supabase.from('people').delete().eq('id', userId)
+
+  const { error } = await adminAuthClient.auth.admin.deleteUser(userId)
   if (error) return { success: false, error: error.message }
   revalidatePath('/admin/users')
   return { success: true }
+}
+
+export async function createAdminUser(formData: FormData) {
+  if (!(await isSuperAdmin())) return { success: false, error: 'Unauthorized' }
+
+  const email = formData.get('email') as string;
+  const password = formData.get('password') as string;
+  const firstName = formData.get('first_name') as string;
+  const lastName = formData.get('last_name') as string;
+  const role = formData.get('role') as string;
+
+  if (!email || !password || !firstName || !lastName || !role) {
+    return { success: false, error: 'All fields are required.' };
+  }
+
+  // Use the Service Role Key to create the user without logging the current Admin out
+  const adminAuthClient = require('@supabase/supabase-js').createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!,
+    { auth: { autoRefreshToken: false, persistSession: false } }
+  )
+
+  const { data: newUser, error: createError } = await adminAuthClient.auth.admin.createUser({
+    email,
+    password,
+    email_confirm: true,
+    user_metadata: {
+      first_name: firstName,
+      last_name: lastName,
+      full_name: `${firstName} ${lastName}`.trim(),
+    }
+  });
+
+  if (createError) {
+    return { success: false, error: createError.message };
+  }
+
+  if (newUser?.user) {
+    const supabase = await createClient()
+    const { error: profileError } = await supabase.from('people').insert({
+      id: newUser.user.id,
+      email: newUser.user.email,
+      first_name: firstName,
+      last_name: lastName,
+      full_name: `${firstName} ${lastName}`.trim(),
+      role: role
+    })
+
+    if (profileError) {
+      // Cleanup if profile creation fails
+      await adminAuthClient.auth.admin.deleteUser(newUser.user.id);
+      return { success: false, error: profileError.message };
+    }
+  }
+
+  revalidatePath('/admin/users');
+  return { success: true };
 }
