@@ -47,7 +47,7 @@ export async function signup(formData: FormData) {
   const supabase = await createClient()
   const origin = (await headers()).get('origin') || process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'
 
-  const { error } = await supabase.auth.signUp({
+  const { data, error } = await supabase.auth.signUp({
     email,
     password,
     options: {
@@ -63,6 +63,24 @@ export async function signup(formData: FormData) {
 
   if (error) {
     return { success: false, error: error.message }
+  }
+  
+  if (data?.user?.id) {
+    // Insert safely into our new people table
+    const { error: profileError } = await supabase.from('people').insert({
+      id: data.user.id,
+      email: data.user.email,
+      first_name: firstName,
+      last_name: lastName,
+      full_name: `${firstName} ${lastName}`.trim(),
+      location: location,
+      role: 'user'
+    })
+    
+    if (profileError) {
+      console.error("People insert error:", profileError)
+      // Usually fails if trigger already runs, or constraints, but we can suppress
+    }
   }
 
   return { success: true, message: 'Check your email to continue sign in process' }

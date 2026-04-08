@@ -37,9 +37,9 @@ export async function middleware(request: NextRequest) {
       return NextResponse.redirect(new URL('/login', request.url))
     }
 
-    // Fetch role from profiles
+    // Fetch role from people
     const { data: profile } = await supabase
-      .from('profiles')
+      .from('people')
       .select('role')
       .eq('id', user.id)
       .single()

@@ -15,7 +15,7 @@ export async function getUserRole(): Promise<UserRole> {
     }
 
     let { data: profile, error: dbError } = await supabase
-      .from('profiles')
+      .from('people')
       .select('role')
       .eq('id', user.id)
       .single()
@@ -24,7 +24,7 @@ export async function getUserRole(): Promise<UserRole> {
        console.log('GetUserRole: DB Error fetching profile by ID, trying by email...', dbError.message);
        // Fallback to searching by email if ID is mismatched (e.g. from manual DB insert)
        const { data: profileByEmail, error: emailErr } = await supabase
-         .from('profiles')
+         .from('people')
          .select('role')
          .eq('email', user.email)
          .single()

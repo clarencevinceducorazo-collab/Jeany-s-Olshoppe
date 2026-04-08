@@ -128,7 +128,7 @@ export async function deleteProduct(id: string) {
 export async function updateUserRole(userId: string, role: 'user' | 'admin' | 'super_admin') {
   if (!(await isSuperAdmin())) return { success: false, error: 'Unauthorized' }
   const supabase = await createClient()
-  const { error } = await supabase.from('profiles').update({ role }).eq('id', userId)
+  const { error } = await supabase.from('people').update({ role }).eq('id', userId)
   if (error) return { success: false, error: error.message }
   revalidatePath('/admin/users')
   return { success: true }
