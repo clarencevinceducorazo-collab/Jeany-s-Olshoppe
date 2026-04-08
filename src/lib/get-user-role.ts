@@ -7,8 +7,10 @@ export async function getUserRole(): Promise<UserRole> {
     const supabase = await createClient()
 
     const { data: { user }, error: authError } = await supabase.auth.getUser()
+    console.log("GetUserRole user id:", user?.id, "authError:", authError?.message);
     
     if (!user || authError) {
+      console.log('GetUserRole: Return null because no user');
       return null
     }
 
@@ -19,10 +21,12 @@ export async function getUserRole(): Promise<UserRole> {
       .single()
       
     if (dbError) {
+       console.log('GetUserRole: DB Error fetching profile:', dbError.message);
        return 'user';
     }
 
-    const roleString = typeof profile?.role === 'string' ? profile.role.toLowerCase() : 'user';
+    console.log('GetUserRole: Profile result:', profile);
+    const roleString = typeof profile?.role === 'string' ? profile.role.trim().toLowerCase() : 'user';
     return (roleString as UserRole) ?? 'user';
   } catch (err) {
     return null
