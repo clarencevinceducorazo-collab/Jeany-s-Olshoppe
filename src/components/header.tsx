@@ -14,6 +14,7 @@ export function Header({ role }: { role: UserRole }) {
   const navLinks = [
     { href: '/', label: 'Home' },
     { href: '/shop', label: 'Shop' },
+    { href: '/live', label: 'Live', isLive: true },
     ...(role === 'admin' || role === 'super_admin' ? [{ href: '/admin', label: 'Admin Panel' }] : []),
   ];
 
@@ -32,18 +33,21 @@ export function Header({ role }: { role: UserRole }) {
                   key={link.href}
                   href={link.href}
                   className={cn(
-                    'group relative font-medium tracking-wide uppercase text-xs transition-colors',
-                    isActive ? 'text-primary' : 'text-foreground/50 hover:text-primary'
+                    'group relative font-medium tracking-wide uppercase text-xs transition-colors flex items-center gap-1.5',
+                    isActive ? (link.isLive ? 'text-red-500 font-bold' : 'text-primary') : 'text-foreground/50 hover:text-primary'
                   )}
                 >
+                  {link.isLive && (
+                     <span className={cn("w-2 h-2 rounded-full", isActive ? "bg-red-500 animate-pulse" : "bg-red-500/50")} />
+                  )}
                   {link.label}
-                  {isActive && (
+                  {isActive && !link.isLive && (
                     <motion.div
                       layoutId="header-underline"
                       className="absolute -bottom-2 left-0 right-0 h-[2px] bg-accent"
                     />
                   )}
-                  {!isActive && (
+                  {!isActive && !link.isLive && (
                     <div className="absolute -bottom-2 left-0 right-0 h-[2px] bg-accent scale-x-0 group-hover:scale-x-100 transition-transform origin-left" />
                   )}
                 </Link>
