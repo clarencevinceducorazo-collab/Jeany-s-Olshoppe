@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+
+# Block admin and private routes
+Disallow: /admin
+Disallow: /api/
+Disallow: /auth/
+
+# Sitemap
+Sitemap: https://jeanys-olshoppe.vercel.app/sitemap.xml

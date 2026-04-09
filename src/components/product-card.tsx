@@ -23,11 +23,11 @@ export function ProductCard({ product }: ProductCardProps) {
           )}>
             <Image
               src={product.images[0]}
-              alt={product.name}
+              alt={`${product.name} – Japan surplus item at Jeany's Olshoppe${product.category ? `, category: ${product.category}` : ''}`}
               fill
+              loading="lazy"
               className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
-              sizes="(max-width: 768px) 50vw, (max-width: 1200px) 25vw, 20vw"
-              data-ai-hint={product.imageHint}
+              sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
             />
           </div>
         </Link>
