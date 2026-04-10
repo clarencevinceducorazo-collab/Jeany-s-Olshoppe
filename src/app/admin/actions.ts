@@ -209,3 +209,62 @@ export async function createAdminUser(formData: FormData) {
   revalidatePath('/admin/users');
   return { success: true };
 }
+
+export async function createRiderUser(formData: FormData) {
+  if (!(await isSuperAdmin())) return { success: false, error: 'Unauthorized' }
+
+  const email = formData.get('email') as string;
+  const password = formData.get('password') as string;
+  const firstName = formData.get('first_name') as string;
+  const lastName = formData.get('last_name') as string;
+  const phone = formData.get('phone') as string;
+
+  if (!email || !password || !firstName || !lastName || !phone) {
+    return { success: false, error: 'All fields are required.' };
+  }
+
+  const adminAuthClient = require('@supabase/supabase-js').createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!,
+    { auth: { autoRefreshToken: false, persistSession: false } }
+  )
+
+  const { data: newUser, error: createError } = await adminAuthClient.auth.admin.createUser({
+    email,
+    password,
+    email_confirm: true,
+    user_metadata: {
+      first_name: firstName,
+      last_name: lastName,
+      phone: phone,
+      full_name: `${firstName} ${lastName}`.trim(),
+    }
+  });
+
+  if (createError) {
+    return { success: false, error: createError.message };
+  }
+
+  if (newUser?.user) {
+    const supabase = await createClient()
+    const { error: profileError } = await supabase.from('people').insert({
+      id: newUser.user.id,
+      email: newUser.user.email,
+      first_name: firstName,
+      last_name: lastName,
+      full_name: `${firstName} ${lastName}`.trim(),
+      role: 'rider'
+    })
+
+    if (profileError) {
+      await adminAuthClient.auth.admin.deleteUser(newUser.user.id);
+      return { success: false, error: profileError.message };
+    }
+    
+    // We can't insert into a riders table without knowing if it exists. 
+    // We will just store user role 'rider'. Later, we can add a rider_profiles table.
+  }
+
+  revalidatePath('/admin/riders');
+  return { success: true };
+}

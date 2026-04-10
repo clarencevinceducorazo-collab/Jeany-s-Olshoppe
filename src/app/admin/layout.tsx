@@ -1,14 +1,18 @@
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
 import { getUserRole } from '@/lib/get-user-role'
-import { LayoutDashboard, Package, Users, LogOut, ArrowLeft, ShieldCheck } from 'lucide-react'
+import { LayoutDashboard, Package, Users, LogOut, ArrowLeft, ShieldCheck, Bike, Map } from 'lucide-react'
 import { createClient } from '@/lib/supabase/server'
 
 async function AdminSidebar({ role }: { role: string }) {
   const navItems = [
     { href: '/admin', label: 'Dashboard', icon: LayoutDashboard },
     { href: '/admin/products', label: 'Products', icon: Package },
-    ...(role === 'super_admin' ? [{ href: '/admin/users', label: 'Users', icon: Users }] : []),
+    ...(role === 'super_admin' ? [
+      { href: '/admin/users', label: 'Users', icon: Users },
+      { href: '/admin/riders', label: 'Riders', icon: Bike },
+      { href: '/admin/map', label: 'Maps', icon: Map }
+    ] : []),
   ]
 
   async function logout() {
