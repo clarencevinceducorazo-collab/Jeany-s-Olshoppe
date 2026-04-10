@@ -268,3 +268,52 @@ export async function createRiderUser(formData: FormData) {
   revalidatePath('/admin/riders');
   return { success: true };
 }
+
+// ─── Map & Logistics Actions ───────────────────────────────────────
+
+export async function saveBuyerLocation(formData: FormData) {
+  if (!(await isSuperAdmin())) return { success: false, error: 'Unauthorized' }
+
+  const name = formData.get('name') as string;
+  const description = formData.get('description') as string;
+  const landmark = formData.get('landmark') as string;
+  const lat = parseFloat(formData.get('latitude') as string);
+  const lng = parseFloat(formData.get('longitude') as string);
+
+  if (!name || !description || isNaN(lat) || isNaN(lng)) {
+    return { success: false, error: 'Missing required location fields.' };
+  }
+
+  const supabase = await createClient()
+  
+  const { error } = await supabase.from('buyers_locations').insert({
+    name,
+    description,
+    landmark: landmark || null,
+    latitude: lat,
+    longitude: lng
+  })
+
+  if (error) {
+    return { success: false, error: error.message };
+  }
+
+  revalidatePath('/admin/map');
+  return { success: true };
+}
+
+export async function getBuyerLocations() {
+  const supabase = await createClient()
+  // No strict auth requirement on fetch here, assumed to be checked at page level
+  const { data, error } = await supabase
+    .from('buyers_locations')
+    .select('*')
+    .order('created_at', { ascending: false })
+
+  if (error) {
+    console.error("Error fetching map locations:", error);
+    return [];
+  }
+  return data;
+}
+
