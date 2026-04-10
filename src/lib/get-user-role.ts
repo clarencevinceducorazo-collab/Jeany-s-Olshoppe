@@ -1,6 +1,6 @@
 import { createClient } from '@/lib/supabase/server'
 
-export type UserRole = 'user' | 'admin' | 'super_admin' | null
+export type UserRole = 'user' | 'admin' | 'super_admin' | 'rider' | null
 
 export async function getUserRole(): Promise<UserRole> {
   try {
