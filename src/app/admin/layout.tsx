@@ -8,7 +8,7 @@ async function AdminSidebar({ role }: { role: string }) {
   const navItems = [
     { href: '/admin', label: 'Dashboard', icon: LayoutDashboard },
     { href: '/admin/products', label: 'Products', icon: Package },
-    { href: '/team', label: 'Staff Team', icon: Contact },
+    { href: '/admin/team', label: 'Staff Team', icon: Contact },
     ...(role === 'super_admin' ? [
       { href: '/admin/users', label: 'Users', icon: Users },
       { href: '/admin/riders', label: 'Riders', icon: Bike },
