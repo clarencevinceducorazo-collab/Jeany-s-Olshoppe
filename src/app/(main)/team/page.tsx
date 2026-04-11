@@ -14,19 +14,19 @@ const TEAM_DATA = {
     role: "Live Host / Seller",
     description: "The main speaker and seller during our live selling sessions. Always ready to present our finest Japan Surplus collections, answer your questions, and ensure an exciting shopping experience in real time. The Voice of Jeany's.",
     tag: "Host",
-    avatarUrl: "/images/jeanelyn.jpg"
+    avatarUrl: "/images/Staff/jeanelyn.jpg"
   },
   assistants: [
-    { name: "Roberto Razo", role: "Operations Partner", tag: "Admin Representative", isAdmin: true, avatarUrl: "/images/ruben.jpg" },
-    { name: "Rica Razo", role: "Customer Service Representative", tag: "Admin", isAdmin: true, avatarUrl: "/images/rica.jpg" },
-    { name: "Clarence Vince Razo", role: "Operations & Logistics Manager", tag: "Admin", isAdmin: true, avatarUrl: "/images/vince.jpg" },
-    { name: "Jing Acasio", role: "Live Support / Coordinator", tag: "Assistant", isAdmin: false, avatarUrl: "/images/jing.jpg" },
-    { name: "Liza Pascua", role: "Live Stream Assistant", tag: "Assistant", isAdmin: false, avatarUrl: "/images/liza.jpg" },
-    { name: "Kea Montemayor", role: "Live Stream Assistant", tag: "Assistant", isAdmin: false, avatarUrl: "/images/kea.jpg" },
+    { name: "Roberto Razo", role: "Operations Partner", tag: "Admin Representative", isAdmin: true, avatarUrl: "/images/Staff/ruben.jpg" },
+    { name: "Rica Razo", role: "Customer Service Representative", tag: "Admin", isAdmin: true, avatarUrl: "/images/Staff/rica.jpg" },
+    { name: "Clarence Vince Razo", role: "Operations & Logistics Manager", tag: "Admin", isAdmin: true, avatarUrl: "/images/Staff/vince.jpg" },
+    { name: "Jing Acasio", role: "Live Support / Coordinator", tag: "Assistant", isAdmin: false, avatarUrl: "/images/Staff/jing.jpg" },
+    { name: "Liza Pascua", role: "Live Stream Assistant", tag: "Assistant", isAdmin: false, avatarUrl: "/images/Staff/liza.jpg" },
+    { name: "Kea Montemayor", role: "Live Stream Assistant", tag: "Assistant", isAdmin: false, avatarUrl: "/images/Staff/kea.jpg" },
   ],
   delivery: [
-    { name: "Christopher M. Velbis", role: "Long-Distance Delivery Rider", tag: "Rider", avatarUrl: "/images/boyet.jpg" },
-    { name: "Christopher G. Prestoza", role: "Long-Distance Delivery Rider", tag: "Rider", avatarUrl: "/images/boyet2.jpg" },
+    { name: "Christopher M. Velbis", role: "Long-Distance Delivery Rider", tag: "Rider", avatarUrl: "/images/riders/boyet.jpg" },
+    { name: "Christopher G. Prestoza", role: "Long-Distance Delivery Rider", tag: "Rider", avatarUrl: "/images/riders/boyet2.jpg" },
     { name: "Richard Eslava", role: "Delivery Rider", tag: "Rider", avatarUrl: "" },
   ]
 };
@@ -69,7 +69,7 @@ export default function TeamPage() {
       
       {/* Background Japanese Watermark Image */}
       <div className="fixed inset-0 pointer-events-none opacity-[0.03] z-0 mix-blend-overlay">
-         <Image src="/images/japanese.jpg" alt="Background" fill className="object-cover" />
+         <Image src="/images/Staff/japanese.jpg" alt="Background" fill className="object-cover" />
       </div>
 
       <div className="max-w-6xl mx-auto space-y-20 relative z-10">
@@ -78,7 +78,7 @@ export default function TeamPage() {
         <div className="text-center space-y-6 flex flex-col items-center">
           <div className="w-20 h-20 rounded-full border border-white/10 overflow-hidden shadow-2xl p-1 bg-white/5 backdrop-blur-md">
             <div className="relative w-full h-full rounded-full overflow-hidden">
-              <Image src="/images/logo.jpg" alt="Jeany's Olshoppe Logo" fill className="object-cover" />
+              <Image src="/images/Staff/logo.jpg" alt="Jeany's Olshoppe Logo" fill className="object-cover" />
             </div>
           </div>
           <div>
@@ -127,7 +127,7 @@ export default function TeamPage() {
                <div className="absolute top-0 inset-x-0 h-6 bg-[#2a2320] rounded-b-xl z-20 mx-auto w-1/3" />
                
                {/* Live Background */}
-               <Image src="/images/live.png" alt="Live Session" fill className="object-cover z-0" />
+               <Image src="/images/Staff/live.png" alt="Live Session" fill className="object-cover z-0" />
                
                {/* Live Badge UI */}
                <div className="absolute top-4 left-4 z-10 bg-red-500 text-white text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded shadow-lg flex items-center gap-1">
@@ -143,7 +143,7 @@ export default function TeamPage() {
                  {/* Chat Bubble 1 */}
                  <div className="flex items-start gap-2 bg-black/40 backdrop-blur-sm p-1.5 rounded-xl border border-white/5 shadow-sm transform hover:scale-105 transition-transform origin-bottom-left cursor-pointer">
                    <div className="w-6 h-6 rounded-full overflow-hidden shrink-0 relative border border-white/10">
-                     <Image src="/images/celia.jpg" alt="Celia" fill className="object-cover" />
+                     <Image src="/images/Staff/liza.jpg" alt="Celia" fill className="object-cover" />
                    </div>
                    <div>
                      <p className="text-[9px] font-bold text-white/80">Celia Frias</p>
@@ -154,7 +154,7 @@ export default function TeamPage() {
                  {/* Chat Bubble 2 */}
                  <div className="flex items-start gap-2 bg-black/40 backdrop-blur-sm p-1.5 rounded-xl border border-white/5 shadow-sm transform hover:scale-105 transition-transform origin-bottom-left cursor-pointer">
                    <div className="w-6 h-6 rounded-full overflow-hidden shrink-0 relative border border-white/10">
-                     <Image src="/images/marye.jpg" alt="Mary E" fill className="object-cover" />
+                     <Image src="/images/Staff/kea.jpg" alt="Mary E" fill className="object-cover" />
                    </div>
                    <div>
                      <p className="text-[9px] font-bold text-accent/80 flex items-center gap-1">Mary E. <MessageCircleHeart className="w-2.5 h-2.5 text-rose-400" /></p>
@@ -170,7 +170,7 @@ export default function TeamPage() {
 
         {/* Japan Ceramics Ambient Header Component */}
         <div className="relative h-40 w-full rounded-2xl overflow-hidden border border-white/10 shadow-2xl my-8">
-           <Image src="/images/bowl.jpg" alt="Ceramics Banner" fill className="object-cover opacity-60 mix-blend-luminosity" />
+           <Image src="/images/Staff/thrift-stores.webp" alt="Ceramics Banner" fill className="object-cover opacity-60 mix-blend-luminosity" />
            <div className="absolute inset-0 bg-gradient-to-r from-[#1a1512] to-transparent" />
            <div className="absolute inset-0 flex flex-col justify-center px-8 md:px-12">
              <h3 className="text-2xl font-bold text-white/90">Authentic Connections</h3>
@@ -187,7 +187,7 @@ export default function TeamPage() {
             </div>
             <div className="flex items-center gap-2">
               <div className="w-40 h-10 relative opacity-40 rounded-lg overflow-hidden mix-blend-overlay hidden md:block">
-                <Image src="/images/japan.jpg" alt="Japan Decor" fill className="object-cover" />
+                <Image src="/images/Staff/japan.jpg" alt="Japan Decor" fill className="object-cover" />
               </div>
             </div>
           </div>
