@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
 import { getUserRole } from '@/lib/get-user-role'
-import { LayoutDashboard, Package, Users, LogOut, ArrowLeft, ShieldCheck, Bike, Map } from 'lucide-react'
+import { LayoutDashboard, Package, Users, LogOut, ArrowLeft, ShieldCheck, Bike, Map, MessageSquare } from 'lucide-react'
 import { createClient } from '@/lib/supabase/server'
 
 async function AdminSidebar({ role }: { role: string }) {
@@ -11,7 +11,8 @@ async function AdminSidebar({ role }: { role: string }) {
     ...(role === 'super_admin' ? [
       { href: '/admin/users', label: 'Users', icon: Users },
       { href: '/admin/riders', label: 'Riders', icon: Bike },
-      { href: '/admin/map', label: 'Maps', icon: Map }
+      { href: '/admin/map', label: 'Maps', icon: Map },
+      { href: '/admin/chat', label: 'Dispatch Chat', icon: MessageSquare }
     ] : []),
   ]
 

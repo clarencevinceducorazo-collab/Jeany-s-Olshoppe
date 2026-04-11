@@ -2,13 +2,14 @@ import { getUserRole } from '@/lib/get-user-role'
 import { redirect } from 'next/navigation'
 import { LogisticsMap } from './logistics-map'
 import { Map } from 'lucide-react'
-import { getBuyerLocations } from '../actions'
+import { getBuyerLocations, getLiveRiders } from '../actions'
 
 export default async function AdminMapPage() {
   const role = await getUserRole()
   if (role !== 'super_admin') redirect('/admin') 
 
   const initialLocations = await getBuyerLocations()
+  const liveRiders = await getLiveRiders()
 
   return (
     <div className="p-4 md:p-8 w-full h-screen flex flex-col max-w-7xl mx-auto">
@@ -21,7 +22,7 @@ export default async function AdminMapPage() {
       </div>
       
       <div className="flex-1 w-full bg-white/5 rounded-xl border border-white/5 p-2 overflow-hidden min-h-[500px]">
-        <LogisticsMap initialLocations={initialLocations || []} />
+        <LogisticsMap initialLocations={initialLocations || []} liveRiders={liveRiders || []} />
       </div>
     </div>
   )

@@ -317,3 +317,26 @@ export async function getBuyerLocations() {
   return data;
 }
 
+export async function getLiveRiders() {
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from('people')
+    .select(`
+      id,
+      full_name,
+      rider_statuses (
+        latitude,
+        longitude,
+        status,
+        updated_at
+      )
+    `)
+    .eq('role', 'rider');
+
+  if (error) {
+    console.error("Error fetching live riders:", error);
+    return [];
+  }
+  
+  return data || [];
+}
