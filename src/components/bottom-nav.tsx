@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Home, ShoppingBag, Heart, User, ShieldCheck, Radio } from 'lucide-react';
+import { Home, ShoppingBag, Heart, User, ShieldCheck, Radio, Users } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { motion } from 'framer-motion';
 import { UserRole } from '@/lib/get-user-role';
@@ -15,6 +15,7 @@ export function BottomNav({ role }: { role: UserRole }) {
     { href: '/shop', icon: ShoppingBag, label: 'Shop' },
     { href: '/live', icon: Radio, label: 'Live' },
     { href: '/saved', icon: Heart, label: 'Saved' },
+    { href: '/team', icon: Users, label: 'Staff' },
     { href: '/me', icon: User, label: 'Me' },
     ...(role === 'admin' || role === 'super_admin' ? [{ href: '/admin', icon: ShieldCheck, label: 'Admin' }] : []),
   ];
