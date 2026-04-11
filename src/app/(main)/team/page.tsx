@@ -27,6 +27,7 @@ const TEAM_DATA = {
   delivery: [
     { name: "Christopher M. Velbis", role: "Long-Distance Delivery Rider", tag: "Rider" },
     { name: "Christopher G. Prestoza", role: "Long-Distance Delivery Rider", tag: "Rider" },
+    { name: "Richard Eslava", role: "Delivery Rider", tag: "Rider" },
   ]
 };
 
@@ -34,12 +35,12 @@ function MemberCard({ member, type }: { member: any, type: 'assistant' | 'rider'
   const isAdmin = member.isAdmin;
   
   return (
-    <div className="group relative flex flex-col items-center p-6 bg-white/5 border border-white/10 rounded-2xl backdrop-blur-md hover:bg-white/10 transition-all duration-300">
+    <div className="group relative flex flex-col items-center p-6 bg-white/[0.03] border border-white/10 rounded-2xl backdrop-blur-md hover:bg-white/[0.06] hover:-translate-y-1 shadow-lg hover:shadow-2xl hover:shadow-accent/5 transition-all duration-500 cursor-pointer">
       {/* Role Badge */}
-      <div className={`absolute top-4 right-4 text-[10px] uppercase tracking-wider font-bold px-2.5 py-1 rounded-full flex items-center gap-1.5 shadow-sm
-        ${isAdmin ? 'bg-rose-400/20 text-rose-300 border border-rose-400/30' : 
-          type === 'rider' ? 'bg-orange-400/20 text-orange-300 border border-orange-400/30' : 
-          'bg-accent/20 text-accent border border-accent/20'}
+      <div className={`absolute top-4 right-4 text-[9px] uppercase tracking-widest font-bold px-3 py-1 rounded-full flex items-center gap-1.5 shadow-md backdrop-blur-sm transition-colors duration-300
+        ${isAdmin ? 'bg-rose-500/10 text-rose-300 border border-rose-500/20 group-hover:bg-rose-500/20' : 
+          type === 'rider' ? 'bg-orange-500/10 text-orange-300 border border-orange-500/20 group-hover:bg-orange-500/20' : 
+          'bg-accent/10 text-accent border border-accent/20 group-hover:bg-accent/20'}
       `}>
         {isAdmin && <Shield className="w-3 h-3" />}
         {!isAdmin && type === 'rider' && <Bike className="w-3 h-3" />}
@@ -47,16 +48,17 @@ function MemberCard({ member, type }: { member: any, type: 'assistant' | 'rider'
       </div>
 
       {/* Default Avatar */}
-      <div className="w-24 h-24 rounded-full mb-4 bg-[#241e1b] flex items-center justify-center border-2 border-white/5 shadow-inner overflow-hidden group-hover:scale-105 transition-transform duration-300 relative">
+      <div className="w-24 h-24 rounded-full mb-5 bg-gradient-to-tr from-[#1a1512] to-[#2a2320] flex items-center justify-center border border-white/10 shadow-inner group-hover:shadow-accent/20 group-hover:border-accent/30 overflow-hidden transition-all duration-500 relative">
+         <div className="absolute inset-0 bg-accent/0 group-hover:bg-accent/10 transition-colors duration-500 z-10 pointer-events-none" />
          {member.avatarUrl ? (
-           <Image src={member.avatarUrl} alt={member.name} fill className="object-cover" />
+           <Image src={member.avatarUrl} alt={member.name} fill className="object-cover group-hover:scale-110 transition-transform duration-700" />
          ) : (
-           <UserCircle className="w-12 h-12 text-white/20" />
+           <UserCircle className="w-10 h-10 text-white/30 group-hover:text-accent/80 transition-colors duration-500 group-hover:scale-110" />
          )}
       </div>
 
-      <h3 className="text-white font-bold text-center text-lg">{member.name}</h3>
-      <p className="text-white/50 text-sm text-center mt-1 font-medium">{member.role}</p>
+      <h3 className="text-white/90 font-bold text-center text-base tracking-wide group-hover:text-white transition-colors">{member.name}</h3>
+      <p className="text-white/40 group-hover:text-white/60 text-xs text-center mt-1.5 font-medium px-2 leading-relaxed transition-colors">{member.role}</p>
     </div>
   );
 }
