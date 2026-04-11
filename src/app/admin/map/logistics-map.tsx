@@ -127,7 +127,7 @@ export function LogisticsMap({ initialLocations, liveRiders }: LogisticsMapProps
   const mapOptions = {
      restriction: {
        latLngBounds: pangasinanBounds,
-       strictBounds: false,
+       strictBounds: true,
      },
      styles: [
        { elementType: "geometry", stylers: [{ color: "#242f3e" }] },
