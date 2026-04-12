@@ -188,16 +188,16 @@ export async function createAdminUser(formData: FormData) {
     return { success: false, error: createError.message };
   }
 
-  if (newUser?.user) {
-    const supabase = await createClient()
-    const { error: profileError } = await supabase.from('people').insert({
-      id: newUser.user.id,
-      email: newUser.user.email,
-      first_name: firstName,
-      last_name: lastName,
-      full_name: `${firstName} ${lastName}`.trim(),
-      role: role
-    })
+    if (newUser?.user) {
+      const supabase = await createClient()
+      const { error: profileError } = await supabase.from('people').upsert({
+        id: newUser.user.id,
+        email: newUser.user.email,
+        first_name: firstName,
+        last_name: lastName,
+        full_name: `${firstName} ${lastName}`.trim(),
+        role: role
+      }, { onConflict: 'id' })
 
     if (profileError) {
       // Cleanup if profile creation fails
@@ -245,16 +245,16 @@ export async function createRiderUser(formData: FormData) {
     return { success: false, error: createError.message };
   }
 
-  if (newUser?.user) {
-    const supabase = await createClient()
-    const { error: profileError } = await supabase.from('people').insert({
-      id: newUser.user.id,
-      email: newUser.user.email,
-      first_name: firstName,
-      last_name: lastName,
-      full_name: `${firstName} ${lastName}`.trim(),
-      role: 'rider'
-    })
+    if (newUser?.user) {
+      const supabase = await createClient()
+      const { error: profileError } = await supabase.from('people').upsert({
+        id: newUser.user.id,
+        email: newUser.user.email,
+        first_name: firstName,
+        last_name: lastName,
+        full_name: `${firstName} ${lastName}`.trim(),
+        role: 'rider'
+      }, { onConflict: 'id' })
 
     if (profileError) {
       await adminAuthClient.auth.admin.deleteUser(newUser.user.id);
