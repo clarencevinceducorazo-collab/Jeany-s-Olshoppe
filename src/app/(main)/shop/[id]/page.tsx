@@ -5,7 +5,8 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
 import { Separator } from '@/components/ui/separator';
-import { Heart, MessageCircle, Share2, Info } from 'lucide-react';
+import { Share2, Info } from 'lucide-react';
+import { ProductActions } from './product-actions';
 
 type ProductPageProps = {
   params: Promise<{ id: string }>;
@@ -107,18 +108,11 @@ Is this still available?`;
           <Separator className="my-2" />
 
           {/* Action Buttons */}
-          <div className="flex flex-col gap-3 sm:bg-transparent sm:p-0 bg-background fixed bottom-0 left-0 right-0 p-4 pb-28 border-t sm:static sm:border-0 z-40">
-            <Button size="lg" className="w-full h-11" disabled={isSoldOut}>
-              <Heart className="mr-2 h-5 w-5" />
-              Add to Wishlist
-            </Button>
-            <Button asChild size="lg" className="w-full h-11 bg-[#0084ff] hover:bg-[#0084ff]/90 text-white font-medium">
-              <a href={messengerLink} target="_blank" rel="noopener noreferrer">
-                <MessageCircle className="mr-2 h-5 w-5" /> Inquire via Messenger
-              </a>
-            </Button>
-          </div>
-
+          <ProductActions 
+            isSoldOut={isSoldOut}
+            messengerLink={messengerLink}
+            messageText={messageText}
+          />
         </div>
       </div>
     </div>
