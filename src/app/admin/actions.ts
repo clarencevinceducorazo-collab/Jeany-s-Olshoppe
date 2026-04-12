@@ -31,9 +31,10 @@ export async function createProduct(formData: FormData) {
   for (const file of imageFiles) {
     if (file.size === 0) continue
     const fileName = `${Date.now()}-${file.name.replace(/\s/g, '_')}`
+    const buffer = await file.arrayBuffer()
     const { data, error } = await supabase.storage
       .from('product-images')
-      .upload(fileName, file, { contentType: file.type })
+      .upload(fileName, buffer, { contentType: file.type })
 
     if (error) return { success: false, error: `Image upload failed: ${error.message}` }
 
@@ -83,9 +84,10 @@ export async function updateProduct(id: string, formData: FormData) {
   for (const file of imageFiles) {
     if (file.size === 0) continue
     const fileName = `${Date.now()}-${file.name.replace(/\s/g, '_')}`
+    const buffer = await file.arrayBuffer()
     const { data, error } = await supabase.storage
       .from('product-images')
-      .upload(fileName, file)
+      .upload(fileName, buffer, { contentType: file.type })
     if (error) return { success: false, error: error.message }
     const { data: urlData } = supabase.storage.from('product-images').getPublicUrl(data.path)
     imageUrls.push(urlData.publicUrl)
