@@ -70,7 +70,7 @@ export default function ProductPage({ params }: ProductPageProps) {
                 </Button>
             </div>
             <div className="flex items-center gap-3">
-                <p className="text-3xl font-semibold text-accent">${product.price.toFixed(2)}</p>
+                <p className="text-3xl font-semibold text-accent">₱{product.price.toFixed(2)}</p>
                 <div className="flex gap-2">
                   {isSoldOut && <Badge variant="destructive">Sold Out</Badge>}
                   {isNew && !isSoldOut && <Badge className="bg-accent text-accent-foreground">NEW</Badge>}

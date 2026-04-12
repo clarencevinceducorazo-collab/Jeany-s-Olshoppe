@@ -53,7 +53,7 @@ export function ProductCard({ product }: ProductCardProps) {
           </h3>
         </Link>
         <p className="text-sm font-medium tracking-tight text-foreground/80 shrink-0">
-          ${product.price.toFixed(2)}
+          ₱{product.price.toFixed(2)}
         </p>
       </div>
     </div>

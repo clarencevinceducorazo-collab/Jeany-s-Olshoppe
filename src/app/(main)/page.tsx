@@ -1,9 +1,9 @@
 import { ProductGrid } from "@/components/product-grid";
 import { Button } from "@/components/ui/button";
-import { getProducts } from "@/lib/placeholder-images";
 import { ArrowRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { createClient } from "@/lib/supabase/server";
 import { FadeIn } from "@/components/animations/fade-in";
 import { ContactSection } from "@/components/contact-section";
 import type { Metadata } from "next";
@@ -15,8 +15,14 @@ export const metadata: Metadata = {
   },
 };
 
-export default function HomePage() {
-  const featuredProducts = getProducts({ featured: true, limit: 8 });
+export default async function HomePage() {
+  const supabase = await createClient();
+  const { data: featuredProducts } = await supabase
+    .from('products')
+    .select('*')
+    .eq('is_featured', true)
+    .eq('is_archived', false)
+    .limit(8);
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -119,7 +125,7 @@ export default function HomePage() {
           </FadeIn>
 
           <FadeIn delay={0.2} direction="up">
-            <ProductGrid products={featuredProducts} />
+            <ProductGrid products={featuredProducts || []} />
           </FadeIn>
         </div>
       </section>
