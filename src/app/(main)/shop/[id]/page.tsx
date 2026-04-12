@@ -37,7 +37,7 @@ Price: ₱${product.price.toFixed(2)}
 Is this still available?`;
 
   const encodedMessage = encodeURIComponent(messageText);
-  const messengerLink = `https://m.me/100064110249756?ref=WebsiteVisitor&message=${encodedMessage}`;
+  const messengerLink = `https://m.me/100064110249756?ref=WebsiteVisitor&text=${encodedMessage}`;
 
   return (
     <div className="container mx-auto max-w-4xl px-0 sm:px-4 py-0 sm:py-8">
