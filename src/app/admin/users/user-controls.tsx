@@ -28,6 +28,7 @@ export function UserRoleSelector({ person }: { person: { id: string, role: strin
       }}
     >
       <option value="user">User</option>
+      <option value="rider">Rider</option>
       <option value="admin">Admin</option>
       <option value="super_admin">Super Admin</option>
     </select>

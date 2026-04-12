@@ -65,7 +65,7 @@ export function CreateRiderForm() {
           <button 
             type="submit" 
             disabled={isPending}
-            className="px-6 py-2 bg-accent hover:bg-accent/80 text-background font-medium rounded-lg text-sm transition-colors disabled:opacity-50 flex items-center justify-center min-w-[150px]"
+            className="w-full md:w-auto px-6 py-2 bg-accent hover:bg-accent/80 text-background font-medium rounded-lg text-sm transition-colors disabled:opacity-50 flex items-center justify-center min-w-[150px]"
           >
             {isPending ? <><Loader2 className="w-4 h-4 mr-2 animate-spin"/> Registering...</> : 'Register Rider'}
           </button>
