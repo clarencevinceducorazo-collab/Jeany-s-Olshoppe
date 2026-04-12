@@ -191,8 +191,7 @@ export async function createAdminUser(formData: FormData) {
   }
 
     if (newUser?.user) {
-      const supabase = await createClient()
-      const { error: profileError } = await supabase.from('people').upsert({
+      const { error: profileError } = await adminAuthClient.from('people').upsert({
         id: newUser.user.id,
         email: newUser.user.email,
         first_name: firstName,
@@ -248,8 +247,7 @@ export async function createRiderUser(formData: FormData) {
   }
 
     if (newUser?.user) {
-      const supabase = await createClient()
-      const { error: profileError } = await supabase.from('people').upsert({
+      const { error: profileError } = await adminAuthClient.from('people').upsert({
         id: newUser.user.id,
         email: newUser.user.email,
         first_name: firstName,

@@ -1,4 +1,4 @@
-import { getProductById } from '@/lib/placeholder-images';
+import { createClient } from '@/lib/supabase/server';
 import { notFound } from 'next/navigation';
 import Image from 'next/image';
 import { Badge } from '@/components/ui/badge';
@@ -14,11 +14,18 @@ const WhatsAppIcon = () => (
 );
 
 type ProductPageProps = {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 };
 
-export default function ProductPage({ params }: ProductPageProps) {
-  const product = getProductById(params.id);
+export default async function ProductPage({ params }: ProductPageProps) {
+  const { id } = await params;
+  const supabase = await createClient();
+
+  const { data: product } = await supabase
+    .from('products')
+    .select('*')
+    .eq('id', id)
+    .single();
 
   if (!product) {
     notFound();
@@ -43,7 +50,6 @@ export default function ProductPage({ params }: ProductPageProps) {
                       alt={`${product.name} - image ${index + 1}`}
                       fill
                       className="object-cover"
-                      data-ai-hint={product.imageHint}
                       sizes="(max-width: 768px) 100vw, 50vw"
                     />
                   </div>
