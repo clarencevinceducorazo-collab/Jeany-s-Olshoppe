@@ -1,34 +1,36 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useTransition } from 'react';
 import { createRiderUser } from '../actions';
-import { Bike } from 'lucide-react';
+import { Bike, Loader2 } from 'lucide-react';
+import { useToast } from '@/hooks/use-toast';
 
 export function CreateRiderForm() {
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [error, setError] = useState('');
-  const [success, setSuccess] = useState('');
+  const [isPending, startTransition] = useTransition();
+  const { toast } = useToast();
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    setIsSubmitting(true);
-    setError('');
-    setSuccess('');
-
     const formData = new FormData(e.currentTarget);
+    const form = e.currentTarget;
     
-    // Server action
-    const response = await createRiderUser(formData);
-    
-    if (response?.error) {
-       setError(response.error);
-    } else {
-       setSuccess('Rider successfully registered!');
-       e.currentTarget.reset();
-       // Refresh list
-       window.location.reload();
-    }
-    setIsSubmitting(false);
+    startTransition(async () => {
+      const response = await createRiderUser(formData);
+      
+      if (response?.error) {
+         toast({
+           variant: 'destructive',
+           title: 'Error',
+           description: response.error
+         });
+      } else {
+         toast({
+           title: 'Success!',
+           description: 'Rider successfully registered.'
+         });
+         form.reset();
+      }
+    });
   }
 
   return (
@@ -37,10 +39,6 @@ export function CreateRiderForm() {
         <Bike className="w-5 h-5 text-accent" />
         <h2 className="text-lg font-semibold text-white">Register Delivery Rider</h2>
       </div>
-      
-      {error && <div className="bg-red-500/10 text-red-400 p-3 rounded-lg text-sm mb-4 border border-red-500/20">{error}</div>}
-      {success && <div className="bg-green-500/10 text-green-400 p-3 rounded-lg text-sm mb-4 border border-green-500/20">{success}</div>}
-
       <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="grid gap-1">
           <label className="text-xs text-white/50 uppercase tracking-widest">First Name</label>
@@ -66,10 +64,10 @@ export function CreateRiderForm() {
         <div className="md:col-span-2 flex justify-end mt-2">
           <button 
             type="submit" 
-            disabled={isSubmitting}
-            className="px-6 py-2 bg-accent hover:bg-accent/80 text-background font-medium rounded-lg text-sm transition-colors disabled:opacity-50"
+            disabled={isPending}
+            className="px-6 py-2 bg-accent hover:bg-accent/80 text-background font-medium rounded-lg text-sm transition-colors disabled:opacity-50 flex items-center justify-center min-w-[150px]"
           >
-            {isSubmitting ? 'Registering...' : 'Register Rider'}
+            {isPending ? <><Loader2 className="w-4 h-4 mr-2 animate-spin"/> Registering...</> : 'Register Rider'}
           </button>
         </div>
       </form>
