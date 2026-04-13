@@ -5,12 +5,20 @@ import { revalidatePath } from 'next/cache'
 import { isAdmin } from '@/lib/get-user-role'
 import { redirect } from 'next/navigation'
 
+function getAdminClient() {
+  return require('@supabase/supabase-js').createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!,
+    { auth: { autoRefreshToken: false, persistSession: false } }
+  )
+}
+
 // ─── Fixed Section Actions ────────────────────────────────────────
 
 export async function updateHomeContent(id: string, data: Record<string, unknown>) {
   if (!(await isAdmin())) redirect('/login')
 
-  const supabase = await createClient()
+  const supabase = getAdminClient()
   const { error } = await supabase
     .from('home_content')
     .upsert({ id, data, updated_at: new Date().toISOString() }, { onConflict: 'id' })
@@ -22,7 +30,7 @@ export async function updateHomeContent(id: string, data: Record<string, unknown
 }
 
 export async function getHomeContent(id: string) {
-  const supabase = await createClient()
+  const supabase = getAdminClient()
   const { data, error } = await supabase
     .from('home_content')
     .select('data')
@@ -38,7 +46,7 @@ export async function getHomeContent(id: string) {
 export async function saveHeroSection(formData: FormData) {
   if (!(await isAdmin())) redirect('/login')
 
-  const supabase = await createClient()
+  const supabase = getAdminClient()
   const existing = await getHomeContent('hero')
 
   // Handle image upload if provided
@@ -93,7 +101,7 @@ export async function saveFeaturedSection(formData: FormData) {
 export async function saveAboutSection(formData: FormData) {
   if (!(await isAdmin())) redirect('/login')
 
-  const supabase = await createClient()
+  const supabase = getAdminClient()
   const existing = await getHomeContent('about')
 
   let image_url = formData.get('image_url') as string
@@ -144,7 +152,7 @@ export async function saveContactSection(formData: FormData) {
 export async function createHomeSection(formData: FormData) {
   if (!(await isAdmin())) redirect('/login')
 
-  const supabase = await createClient()
+  const supabase = getAdminClient()
 
   let image_url = ''
   const imageFile = formData.get('image_file') as File
@@ -188,7 +196,7 @@ export async function createHomeSection(formData: FormData) {
 export async function updateHomeSection(id: string, formData: FormData) {
   if (!(await isAdmin())) redirect('/login')
 
-  const supabase = await createClient()
+  const supabase = getAdminClient()
 
   let image_url = formData.get('image_url') as string
   const imageFile = formData.get('image_file') as File
@@ -223,7 +231,7 @@ export async function updateHomeSection(id: string, formData: FormData) {
 export async function deleteHomeSection(id: string) {
   if (!(await isAdmin())) redirect('/login')
 
-  const supabase = await createClient()
+  const supabase = getAdminClient()
   const { error } = await supabase.from('home_sections').delete().eq('id', id)
 
   if (error) return { success: false, error: error.message }
@@ -236,7 +244,7 @@ export async function deleteHomeSection(id: string) {
 export async function reorderHomeSection(id: string, direction: 'up' | 'down') {
   if (!(await isAdmin())) redirect('/login')
 
-  const supabase = await createClient()
+  const supabase = getAdminClient()
 
   const { data: current } = await supabase
     .from('home_sections')
