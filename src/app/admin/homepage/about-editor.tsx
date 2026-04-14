@@ -2,7 +2,7 @@
 
 import { useState, useTransition } from 'react'
 import { useToast } from '@/hooks/use-toast'
-import { saveAboutSection } from '../actions'
+import { saveAboutSection } from './actions'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import { Button } from '@/components/ui/button'
