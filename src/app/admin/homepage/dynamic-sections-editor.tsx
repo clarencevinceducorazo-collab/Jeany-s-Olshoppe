@@ -2,7 +2,7 @@
 
 import { useState, useTransition } from 'react'
 import { useToast } from '@/hooks/use-toast'
-import { createHomeSection, updateHomeSection, deleteHomeSection, reorderHomeSection } from '../actions'
+import { createHomeSection, updateHomeSection, deleteHomeSection, reorderHomeSection } from './actions'
 import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
