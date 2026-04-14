@@ -116,12 +116,29 @@ export async function archiveProduct(id: string, archive: boolean) {
 }
 
 export async function deleteProduct(id: string) {
-  if (!(await isSuperAdmin())) return { success: false, error: 'Unauthorized' }
+  if (!(await isAdmin())) return { success: false, error: 'Unauthorized' }
   const supabase = await createClient()
   const { error } = await supabase.from('products').delete().eq('id', id)
   if (error) return { success: false, error: error.message }
   revalidatePath('/admin/products')
   revalidatePath('/shop')
+  return { success: true }
+}
+
+export async function updateProductBadge(id: string, badge: string | null) {
+  if (!(await isAdmin())) return { success: false, error: 'Unauthorized' }
+  const supabase = await createClient()
+  const { error } = await supabase.from('products').update({ badge }).eq('id', id)
+  
+  // Also adjust stock_qty if marked as sold strictly through badge logic
+  if (badge && badge.toLowerCase() === 'sold') {
+    await supabase.from('products').update({ stock_qty: 0 }).eq('id', id)
+  }
+  
+  if (error) return { success: false, error: error.message }
+  revalidatePath('/admin/products')
+  revalidatePath('/shop')
+  revalidatePath('/')
   return { success: true }
 }
 
