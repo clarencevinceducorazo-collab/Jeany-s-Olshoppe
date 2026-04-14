@@ -30,7 +30,7 @@ export function ProductActionsMenu({ productId, currentBadge }: ProductActionsMe
     startTransition(async () => {
       const result = await updateProductBadge(productId, badge)
       if (result.success) {
-        toast({ title: 'Status updated', description: badge ? \`Marked as "\${badge}"\` : 'Badge removed' })
+        toast({ title: 'Status updated', description: badge ? `Marked as "${badge}"` : 'Badge removed' })
       } else {
         toast({ variant: 'destructive', title: 'Failed to update', description: result.error })
       }
