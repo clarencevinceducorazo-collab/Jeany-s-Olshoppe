@@ -13,5 +13,6 @@ export type Product = {
   imageHint?: string;
   is_featured: boolean;
   is_archived: boolean;
+  badge: string | null;
   created_at: string; // ISO date string
 };
