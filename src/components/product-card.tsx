@@ -32,7 +32,11 @@ export function ProductCard({ product }: ProductCardProps) {
           </div>
         </Link>
         <div className="absolute top-3 left-3 flex flex-col gap-2">
-          {isSoldOut ? (
+          {product.badge ? (
+            <span className="bg-accent/90 text-white backdrop-blur-md text-[10px] font-bold px-3 py-1.5 uppercase tracking-widest rounded-sm shadow-sm border border-accent/20">
+              {product.badge}
+            </span>
+          ) : isSoldOut ? (
             <span className="bg-background/80 text-foreground/80 backdrop-blur-md text-[10px] font-bold px-2 py-1 uppercase tracking-widest rounded-sm">Sold Out</span>
           ) : isNew && (
             <span className="bg-foreground text-background text-[10px] font-bold px-2 py-1 uppercase tracking-widest rounded-sm shadow-sm">New</span>

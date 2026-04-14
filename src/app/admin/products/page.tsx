@@ -3,7 +3,8 @@ import { getUserRole } from '@/lib/get-user-role'
 import Link from 'next/link'
 import Image from 'next/image'
 import { Plus, Edit, Trash2, Archive, ArchiveRestore } from 'lucide-react'
-import { deleteProduct, archiveProduct } from '../actions'
+import { archiveProduct } from '../actions'
+import { ProductActionsMenu } from './product-actions-menu'
 
 export default async function AdminProductsPage() {
   const supabase = await createClient()
@@ -69,14 +70,19 @@ export default async function AdminProductsPage() {
                   )}
                 </td>
                 <td className="px-6 py-4">
-                  <div className="flex gap-2">
+                  <div className="flex flex-wrap gap-2">
+                    {product.badge && (
+                      <span className="px-2 py-1 bg-accent/20 text-accent text-[10px] uppercase tracking-wider rounded font-bold border border-accent/40">
+                        {product.badge}
+                      </span>
+                    )}
                     {product.is_featured && <span className="px-2 py-1 bg-yellow-400/10 text-yellow-400 text-[10px] uppercase tracking-wider rounded font-medium border border-yellow-400/20">Featured</span>}
                     {product.is_archived && <span className="px-2 py-1 bg-white/10 text-white/60 text-[10px] uppercase tracking-wider rounded font-medium border border-white/10">Archived</span>}
-                    {!product.is_archived && !product.is_featured && <span className="px-2 py-1 bg-green-400/10 text-green-400 text-[10px] uppercase tracking-wider rounded font-medium border border-green-400/20">Active</span>}
+                    {!product.is_archived && !product.is_featured && !product.badge && <span className="px-2 py-1 bg-green-400/10 text-green-400 text-[10px] uppercase tracking-wider rounded font-medium border border-green-400/20">Active</span>}
                   </div>
                 </td>
                 <td className="px-6 py-4">
-                  <div className="flex items-center justify-end gap-2">
+                  <div className="flex items-center justify-end gap-1">
                     {/* Archive Button */}
                     <form action={archiveProduct.bind(null, product.id, !product.is_archived)}>
                       <button title={product.is_archived ? "Restore" : "Archive"} className="p-2 rounded-lg hover:bg-white/10 text-white/40 hover:text-white transition-colors">
@@ -84,19 +90,8 @@ export default async function AdminProductsPage() {
                       </button>
                     </form>
                     
-                    {/* Edit Button - Redirects to edit page (To be implemented if needed) */}
-                    <button disabled title="Edit (Coming soon)" className="p-2 rounded-lg hover:bg-white/10 text-white/40 hover:text-white transition-colors opacity-50 cursor-not-allowed">
-                      <Edit className="w-4 h-4" />
-                    </button>
-
-                    {/* Delete strictly for Super Admin */}
-                    {isSuperAdmin && (
-                      <form action={deleteProduct.bind(null, product.id)}>
-                        <button title="Delete permanently" className="p-2 rounded-lg hover:bg-red-500/20 text-white/40 hover:text-red-400 transition-colors">
-                          <Trash2 className="w-4 h-4" />
-                        </button>
-                      </form>
-                    )}
+                    {/* Replaced fixed buttons with Dropdown Menu */}
+                    <ProductActionsMenu productId={product.id} currentBadge={product.badge} />
                   </div>
                 </td>
               </tr>
