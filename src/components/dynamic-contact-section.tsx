@@ -95,7 +95,7 @@ export function DynamicContactSection({ data }: { data: ContactData }) {
                 icon={<Tv2 className="w-5 h-5 text-accent" />}
               />
               <ActionButton
-                href={`${facebookUrl}/support/?surface=page_top_cta_button&entrypoint_surface=page_top_cta_button`}
+                href={`https://www.facebook.com/100064110249756/support/?surface=page_top_cta_button&entrypoint_surface=page_top_cta_button`}
                 label="Subscribe / Support"
                 subtitle="Support our page"
                 variant="default"

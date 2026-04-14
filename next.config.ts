@@ -1,9 +1,14 @@
 import type {NextConfig} from 'next';
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  /* next.config.ts - forced dev server configuration reload */
   serverActions: {
     bodySizeLimit: '100mb',
+  },
+  experimental: {
+    serverActions: {
+      bodySizeLimit: '100mb',
+    },
   },
   typescript: {
     ignoreBuildErrors: true,
